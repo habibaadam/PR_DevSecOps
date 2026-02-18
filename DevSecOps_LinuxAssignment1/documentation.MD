@@ -18,18 +18,18 @@ Below are the steps taken to achieve the objective.
 ![Creating audit_test user](Scenario_1/Part_A.png)
 
 **What was done:**
-- A new user named "audit_test" was created using:
+- A new user named `audit_test` was created using:
   ```
   sudo useradd -m -s /bin/bash audit_test
   ```
 - Verified the account exists in `/etc/passwd`
 
 **Why It was Done:**
-- The `-m` flag in the sudo useradd command ensures a home directory is created for `audit_test
+- The `-m` flag in the sudo useradd command ensures a home directory is created for `audit_test`
 - The `-s` flag followed by the `/bin/bash` sets a default bash shell for the newly created user.
 
 **Observation Made:**
 - After checking the `etc/passwd` file where all users exist:
    - User `audit_test` was assigned UID(userId) 1004
    - User `audit_test` was assigned GID(groupId) 1004
-   - User `audit_test` was given a home directory and also a default bash shell.
+   - User `audit_test` was given a home directory and also a default bash shell. 
