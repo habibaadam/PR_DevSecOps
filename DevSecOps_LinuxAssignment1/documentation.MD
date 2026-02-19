@@ -1,4 +1,12 @@
 # DevSecOps Linux Hands-On Assignment Documentation
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat&logo=linux&logoColor=black)
+![DevSecOps](https://img.shields.io/badge/DevSecOps-Security-red)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-E95420?style=flat&logo=ubuntu&logoColor=white)
+![Bash](https://img.shields.io/badge/Bash-4EAA25?style=flat&logo=gnu-bash&logoColor=white)
+![Security](https://img.shields.io/badge/Security-Access%20Control-blue)
+![User Management](https://img.shields.io/badge/User-Management-green)
+![Permissions](https://img.shields.io/badge/File-Permissions-orange)
+![Audit](https://img.shields.io/badge/Security-Audit-purple)
 
 ## Overview
 
