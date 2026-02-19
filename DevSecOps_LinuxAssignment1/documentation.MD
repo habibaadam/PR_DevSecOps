@@ -66,3 +66,16 @@ Below are the steps taken to achieve the objective.
 - Users without passwords pose a security threat as any process or service running as audit_test could be accessed without authentication
 - Users without a password can exist on the system but cannot log in interactively until a password is set.
 
+---
+
+### Non Privileged User Attempt At Accessing `etc/shadow` file.
+![Non Privileged](Scenario_1/non_privileged_demo.png)
+  - A non privileged user is a user who does not belong to the `sudoers` group. Such users cannot temporarily use the `sudo` command to elevate their privileges.
+  - I logged in as `mark`, a non privileged user and attempted to access/view the `/etc/shadow` file.
+  - I received feedback confirming that the user `mark` could not view the systems location for storing password states because `mark` is a non privileged user.
+
+  #### Conclusion
+  By attempting to access `/etc/shadow` as `mark`, a non-privileged user, I confirmed that:
+
+ - Access Control Works as Intended - The `/etc/shadow` file is protected with `600` permissions (readable only by root), preventing unauthorized users from viewing sensitive password hashes.
+- Privilege Separation is Enforced - Even legitimate users without sudo privileges cannot access critical system files that contain authentication data, reducing the attack surface.
