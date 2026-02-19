@@ -70,6 +70,10 @@ Below are the steps taken to achieve the objective.
 ---
 
 ### Non Privileged User Attempt At Accessing `etc/shadow` file.
+
+![Non Privileged](Scenario_1/non_privileged_demo_02.png)
+
+
 ![Non Privileged](Scenario_1/non_privileged_demo.png)
   - A non privileged user is a user who does not belong to the `sudoers` group. Such users cannot temporarily use the `sudo` command to elevate their privileges.
   - I logged in as `mark`, a non privileged user and attempted to access/view the `/etc/shadow` file.
@@ -176,4 +180,4 @@ Below are the detailed steps taken to achieve the objectives.
 
 - By organizing users into `dev_team`, `sec_team`, `qa_team`, and `ops_team`, I created logical access boundaries that mimic organizational structure. File and directory permissions can also be set using group ownership, allowing users belonging to a particular group have access, whiles those outside of a group can be restricted access.
 
-- 
+-
