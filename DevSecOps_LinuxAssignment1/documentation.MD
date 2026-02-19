@@ -79,3 +79,49 @@ Below are the steps taken to achieve the objective.
 
  - Access Control Works as Intended - The `/etc/shadow` file is protected with `600` permissions (readable only by root), preventing unauthorized users from viewing sensitive password hashes.
 - Privilege Separation is Enforced - Even legitimate users without sudo privileges cannot access critical system files that contain authentication data, reducing the attack surface.
+
+---
+
+### Scenario 2 :  DevSecOps User & Department Access
+<p>
+As a DevSecOps Engineer responsible for onboarding new staff onto a Linux server used for application development, security monitoring, QA and CI/CD Operations, The objective of this sceanrio is to implement department based access through group management, least privilege principle via restricted permissions, and audit traceability through proper user and group configurations.
+
+Below are the detailed steps taken to achieve the objectives.
+</p>
+
+---
+
+#### Step 1 - Creating Users For Newly Onboarded Staff (lateef, purity, arthur, paula, yaa, alex, habiba, and aminat)
+
+![First_set_of_staff](Scenario_2/user_creation_01.png)
+
+![Second_set_of_staff](Scenario_2/user_creation_02.png)
+
+![Third_set_of_staff](Scenario_2/user_creation_03.png)
+
+---
+
+#### Step 2 - Creating Departments(Groups) and Adding Staff To Respective Departments.
+
+![group_creation](Scenario_2/group_creation_task2.png)
+
+#### Step 3 - Ensuring One User `aminat` is created without a password and setting it later.
+![Last_set_of_staff](Scenario_2/user_creation_task3.png)
+
+---
+
+#### Step 4 - Creation Of service account named `ci_runner` with a non login shell
+
+![non_login_shell](Scenario_2/non_login_task4.png)
+
+#### Step 5 - Granting Sudo Access To One User from `ops_team`, which is `alex`
+![sudo_access](Scenario_2/sudo_access_task5.png)
+
+#### Step 6 - Deleting one user account whiles preserving the home directory
+
+![preserving_home_dir](Scenario_2/preserve_home_dirtask6.png)
+
+---
+
+**What was done:**
+-
