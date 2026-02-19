@@ -170,5 +170,10 @@ Below are the detailed steps taken to achieve the objectives.
 
 ---
 
-**Reasons Why It Was Done**
+**Explanations And Observations Made**
+
+- Linux records and tracks group membership using primary storage locations such as `etc/groups`, which stores group name, group id and group members. To further confirm indivual members of specific groups, I used `getent <group_name>`.
+
+- By organizing users into `dev_team`, `sec_team`, `qa_team`, and `ops_team`, I created logical access boundaries that mimic organizational structure. File and directory permissions can also be set using group ownership, allowing users belonging to a particular group have access, whiles those outside of a group can be restricted access.
+
 - 
