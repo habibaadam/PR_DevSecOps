@@ -18,6 +18,7 @@ Below are the steps taken to achieve the objective.
 #### Step 1 - Creating A User With No Password
 
 ![Creating audit_test user](Scenario_1/Part_A.png)
+
 ---
 
 #### Step 2 - Identifying Users Without A Password
