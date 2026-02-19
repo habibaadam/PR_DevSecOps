@@ -1,6 +1,14 @@
 # ParoCyber DevSecOps Program Assignment Documentation
 This repository contains hands-on assignments and projects completed as part of the DevSecOps training program.
 
+![DevSecOps](https://img.shields.io/badge/DevSecOps-Practice-red?style=for-the-badge)
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor!)
+![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white)
+
+
+
 ---
 
 ### Assignments
