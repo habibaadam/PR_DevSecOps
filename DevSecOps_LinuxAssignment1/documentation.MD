@@ -84,7 +84,7 @@ Below are the steps taken to achieve the objective.
 
 ### Scenario 2 :  DevSecOps User & Department Access
 <p>
-As a DevSecOps Engineer responsible for onboarding new staff onto a Linux server used for application development, security monitoring, QA and CI/CD Operations, The objective of this sceanrio is to implement department based access through group management, least privilege principle via restricted permissions, and audit traceability through proper user and group configurations.
+As a DevSecOps Engineer responsible for onboarding new staff onto a Linux server used for application development, security monitoring, QA and CI/CD Operations, The objective of this scenario is to implement department based access through group management, least privilege principle via restricted permissions, and audit traceability through proper user and group configurations.
 
 Below are the detailed steps taken to achieve the objectives.
 </p>
@@ -124,4 +124,49 @@ Below are the detailed steps taken to achieve the objectives.
 ---
 
 **What was done:**
--
+- All staff/users except `aminat` were created with this command
+
+   ```
+   sudo adduser <staff_name>
+   ```
+- Groups representing the departments -> `dev_team`,
+`sec_team`, `qa_team`, `ops_team` were created using:
+
+    ```
+    sudo groupadd <group_name>
+    ```
+- Users/staff were added to their respective teams using:
+
+   ```
+   sudo usermod -aG <group_name> <user_name>
+   ```
+   and verified group membership using
+   ```
+   getent group <group_name>
+   ```
+- A user `aminat` was created without a password initially with:
+   ```
+   sudo useradd -m -s /bin/bash <user_name>
+   ```
+   and later set with :
+   ```
+   sudo passwd <username>
+   ```
+- A service user namd `ci_runner` with a non login shell was created using:
+
+  ```
+  sudo useradd -s /sbin/nologin -m <user_name>
+  ```
+- Sudo access was granted to a user from the `ops_team`, `aminat` using:
+
+  ```
+  sudo usermod -aG sudo <user_name>
+  ```
+- A user's account `alex` was deleted whiles preserving their home directory using:
+  ```
+  sudo userdel <user_name>
+  ```
+
+---
+
+**Why It Was Done**
