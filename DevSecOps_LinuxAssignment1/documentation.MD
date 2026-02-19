@@ -188,4 +188,21 @@ Below are the detailed steps taken to achieve the objectives.
 
 - By organizing users into `dev_team`, `sec_team`, `qa_team`, and `ops_team`, I created logical access boundaries that mimic organizational structure. File and directory permissions can also be set using group ownership, allowing users belonging to a particular group have access, whiles those outside of a group can be restricted access.
 
--
+- Service accounts like `ci_runner` created with non login shells are meant to run automated processes, and they should never require interactive login. Setting shell to `/sbin/nologin` prevents anyone, including attackrs from logging in as this user.
+
+- After deleting the user `alex` without adding the `r` flag for `sudo userdel <username>`, the home directory of alex was still retain. Reasons for retaining home directories of users include data preservations and forensics. Users may have created critical project files, or scripts before they left, and their files may contain evidence.
+
+- Granting `sudo` access to `aminat` from the `ops_team` without including other members of her group is an example of how privilege escalation is controlled in DevSecOps environments. The `sudo` command grants temporary privileges to `aminat`, without her needing to be logged in as the root user.
+
+---
+
+## Overall Conclusion
+
+Through this assignment, I demonstrated that Linux security is built on **layered controls**:
+1. **User/Group Management** provides identity and role-based access
+2. **Password Policy Enforcement** ensures only authenticated users can access the system
+3. **Service Account Hardening** reduces attack surface
+4. **Data Retention Policies** balance security with business needs
+5. **Privilege Escalation Controls** ensure accountability and auditability
+
+These mechanisms are foundational to DevSecOps practices, where **security is integrated at the system level** rather than bolted on afterward.
