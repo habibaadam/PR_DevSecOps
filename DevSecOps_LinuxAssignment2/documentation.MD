@@ -189,3 +189,28 @@ This documentation provides a complete walkthrough of Linux file security, permi
 <strong>Context:</strong> Developers report files disappearing from shared directories. The objective is to implement controls allowing file creation but preventing deletion of others' files.
 </p>
 
+#### Step 1 - Creating the Shared Directory
+#### Step 2 - Giving Ownerships and Necessary Permissions
+#### Step 3 - Applying Sticky Bit Control
+### Step 4 - Testing File Creation
+### Step 5 - Testing Deletion Prevention
+
+
+![Deletion Prevention](Scenario_7/shared_directory_stability_controls.png)
+
+
+---
+
+**What was done:**
+
+-
+-
+
+**Explanations & Observations:**
+
+-
+-
+-
+
+
+## Overall Conclusion
