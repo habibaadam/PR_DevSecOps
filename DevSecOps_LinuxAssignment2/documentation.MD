@@ -118,3 +118,74 @@ This documentation provides a complete walkthrough of Linux file security, permi
 
 ---
 
+## Scenario 4 – Relative Path Deployment Failure
+
+<p>
+<strong>Context:</strong> A deployment script copied incorrect data due to relative path usage. The objective is to reproduce and fix the issue using absolute paths.
+</p>
+
+
+- Incoming Step Evaluation Soon
+
+
+---
+
+## Scenario 5 – Monitoring Failure After Log Cleanup
+
+#### Step 1 - Creating the Original Log File
+#### Step 2 - Creating a Hard Link
+#### Step 3 - Creating a Symbolic Link
+#### Step 4 - Removing the Original File
+![SymLink Versus HardLink](Scenario_5/monitoring_failure.png)
+
+**What was done:**
+
+-
+
+**Explanations & Observations:**
+
+-
+-
+-
+-
+
+---
+
+## Scenario 6 – Sensitive Data Exposure Hunt
+
+<p>
+<strong>Context:</strong> Security team suspects secrets are hidden in logs and config files. The objective is to scan for sensitive data using grep techniques and proper output redirection.
+</p>
+
+---
+
+#### Step 1 - Simulating Logs and Using Recursive Scanning (grep -r)
+
+#### Step 2 - Using Multiple Expressions (grep -e)
+
+![Recursive Scan](Scenario_6/sensitive_data_hunt-01.png)
+
+#### Step 3 - Using Pattern File (grep -f)
+![Recursive Scan](Scenario_6/sensitive_data_hunt-02.png)
+
+---
+
+**What was done:**
+
+-
+
+**Explanations & Observations:**
+
+-
+-
+-
+-
+
+---
+
+## Scenario 7 – Shared Directory Stability Controls
+
+<p>
+<strong>Context:</strong> Developers report files disappearing from shared directories. The objective is to implement controls allowing file creation but preventing deletion of others' files.
+</p>
+
