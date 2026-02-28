@@ -45,16 +45,22 @@ This documentation provides a complete walkthrough of Linux file security, permi
 
 **What was done:**
 
--
--
--
+- To simulate the given scenario, users named `intern_a`, `dev_user`, and `ops_user` were created using the `sudo useradd -m -s` command. A group named `project_team` was also created, and the aforementioned users were assigned as members of the group, using `sudo groupadd project_team` and `sudo usermod -aG <user_name>`.
+- Passwords were also set for relevant users using `sudo passwd <user_name>` to ensure they had an identity for authentication purposes.
+- A new shared directory was created using borrowed root priviledges, with `sudo mkdir -p /shared/project_files`, and the ownership of the directory was given to the `project_team`. Members of the group were given read, write and execute permissions using `sudo chmod 770 shared/project_files`.
+- SetGid was added to the directory using `chmod g+s <directory_name>` to ensure all files created in the directory belonged to the group, ensuring true collaboration.
+- `intern_a` as a user from the project_team was then switched to, and had the ability to delete a file created by the `dev_user`
+- The command `sudo chattr +i <path to directory>` was then executed finally.
+- `intern_a` as a user from project_team was switched to again, and an attempt to delete the same file became futile.
 
 **Explanations & Observations:**
 
--
--
--
--
+- When `intern_a` first attempted to delete `shared_design.doc`, the deletion succeeded because the directory permissions (`770` with SetGID) granted all group members equal read, write, and execute access. Since `intern_a` belonged to `project_team`, they had full write permissions to the directory, which includes the ability to delete any file within it, regardless of who created it.
+- With linux permissions (rwx), if a user has a write permission on a directory, they can delete any file inside of it, even files owned by others. Permissions control what a user, group or others can access, whiles Attributes control the file behavior itself. Setting `chattr + i` on a file ensures no modifications can be made to the file, not even by the root user.
+- **Real production implications:**
+  - **Shared collaboration directories** need both proper permissions AND attributes for true protection
+  - **Critical config files** (e.g., `/etc/passwd`, application configs) should have `+i` attribute to prevent accidental or malicious modification.
+  - **Audit logs** should use `+a` (append-only) to allow logging while preventing tampering.
 
 
 ## Scenario 2 – Log Overwrite Incident
