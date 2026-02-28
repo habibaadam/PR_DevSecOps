@@ -81,16 +81,24 @@ This documentation provides a complete walkthrough of Linux file security, permi
 
 **What was done:**
 
--
--
--
+- A dummy log directory was created using `mkdir -p logs`, containing a log file `app.log`. To get actual logs with at least 100 lines, the command `head -n 100 /var/log/syslog > logs/app.log` was executed, and the app.log file was confirmed to have 100 lines of content using `wc -l logs/app.log`.
+- A new log was then redirected into the log file using `echo "<random log message>" > logs/app.log`. And the line count of the log file was confirmed to now have 1 line.
+- `sudo chattr + a logs/app.log` was executed after, and a re attempt to redirect another log message proved futile, as an `Operation not permitted` message was received.
+- A new directory named `archive` was then created using the `mkdir` command.
+- `cp -p logs/app.log /archive` was run, and a confirmed duplicate of `app.log`, with it's exact content, was observed.
 
 **Explanations & Observations:**
 
--
--
--
--
+- Using `>`, meaning single redirection completely replaces the file content, destroying all historical data. Which is why 100 lines of possible data, was reduced to just 1 line. Attackers often use this technique to erase evidence of intrusion, and accidental overwrites can destroy critical debugging information.
+- The `chattr +a` attribute allows only appending new data to a file—existing content cannot be modified or deleted, which is why the attempt to add content to the log file was no longer permitted.
+- To preserve metadata, the `cp -p` was used to ensure the file's original timestamps, ownership and permissions remain the same, which is critical for forensics becausee
+   - Timestamps show *when* events occurred.
+   - Ownership shows *who* created the log.
+   - Without `-p`, backups appear as newly created files, breaking the audit trail.
+- **DevSecOps forensic significance:** :
+   - **Incident Response** depends on unaltered logs to reconstruct attack timelines.
+   - **Chain of custody** is broken if metadata is not preserved during backup
+
 
 
 ## Scenario 3 – Permission & Ownership Drift
