@@ -14,13 +14,13 @@
 
 This documentation provides a complete walkthrough of Linux file security, permissions, and forensic scenarios. Each section includes executed commands, terminal output evidence, observations, and security implication.
 
-## Scenario 1 – Shared Document Deletion Incident
+## Scenario 1 – Shared Document Deletion Incident(Outlined Steps)
 
 <p>
 <strong>Context:</strong> An intern accidentally deleted a shared design document. The objective is to reproduce the incident and implement controls to prevent recurrence.
 </p>
 
-### Part A – Multi-User Simulation
+### Part A – Multi-User Simulation(Outlined Steps)
 
 #### Step 1 - Creating Users (intern_a, dev_user, ops_user)
 #### Step 2 - Creating Group and Assigning Users
@@ -35,9 +35,11 @@ This documentation provides a complete walkthrough of Linux file security, permi
 ![Shared Directory](Scenario_1/Part_B.png)
 
 
-### Part C – Preventing Recurrence
+### Part C – Preventing Recurrence (Outlined Steps)
+
 #### Step 1 - Recreating the File
 #### Step 2 - Applying Immutability Protection (chattr +i)
+#### Step 3 - Testing Deletion as intern_a
 
 ![Immutable Protection](Scenario_1/Part_C.png)
 
@@ -47,8 +49,72 @@ This documentation provides a complete walkthrough of Linux file security, permi
 -
 -
 
-**Observations Made And Explanation :**
+**Explanations & Observations:**
 
 -
 -
 -
+-
+
+
+## Scenario 2 – Log Overwrite Incident
+<p>
+<strong>Context:</strong> Application logs were overwritten, destroying forensic history. The objective is to simulate, prevent, and backup logs with proper metadata preservation.
+</p>
+
+#### Step 1 - Creating logs/app.log with 100+ Lines
+![Log Creation](Scenario_2/log_overwrite-01.png)
+
+#### Step 2 - Simulating Accidental Overwrite And Seeing Line Counts
+![Log Creation](Scenario_2/log_overwrite_02.png)
+
+#### Step 3 - Applying Overwrite Prevention Mechanism And Creating Backup
+![Log Creation](Scenario_2/log_overwrite_03.png)
+
+---
+
+**What was done:**
+
+-
+-
+-
+
+**Explanations & Observations:**
+
+-
+-
+-
+-
+
+
+## Scenario 3 – Permission & Ownership Drift
+<p>
+<strong>Context:</strong> A deployment script copied incorrect data due to relative path usage. The objective is to reproduce and fix the issue using absolute paths.
+</p>
+
+#### Step 1 - Creating Files with Varying Permissions
+#### Step 2 - Changing Ownership and Groups (chown, chgrp)
+#### Step 3 - Copying Files WITHOUT Preservation Flags
+![Ownership Change](Scenario_3/permission_drift_CP.png)
+
+#### Step 4 - Copying Files WITH Preservation Flags (cp -p)
+![Copying With Preservation -P](Scenario_3/permission_drift_CP-P.png)
+
+#### Step 5 - Copying Files & Folders WITH Preservation Flags (cp -r)
+![Copying With Preservation -R](Scenario_3/permission_drift_CP-R.png)
+
+---
+
+**What was done:**
+
+-
+
+**Explanations & Observations:**
+
+-
+-
+-
+-
+
+---
+
