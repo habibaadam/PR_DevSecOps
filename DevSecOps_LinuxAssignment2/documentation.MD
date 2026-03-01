@@ -120,7 +120,7 @@ This documentation provides a complete walkthrough of Linux file security, permi
 ---
 
 **What was done:**
-
+- 
 -
 
 **Explanations & Observations:**
@@ -153,15 +153,17 @@ This documentation provides a complete walkthrough of Linux file security, permi
 ![SymLink Versus HardLink](Scenario_5/monitoring_failure.png)
 
 **What was done:**
+- A new log file named `og_log` was created with some content.
+- The `ln og_log hard_link_log` command was executed to create a hard link, and the permissions of the files in the currnt directory was checkeed using `ls -li`. Two files were seen.
+- The `ln -s og_log sym_log` command was run to create a symbolic link pointing to `og_log`.
+- The `og_log` file was removed from the directory, and the content of `hard_link_log` was checked with the `cat` command.
+- The content of `sym_log` was checked but the file no longer existed.
 
--
+**Explanations & Behavorial Differences:**
 
-**Explanations & Observations:**
+- **Inode behavior - Hard Link:** When `og_log` was removed, `hard_link_log` still contained all the original content. This is because hard links point directly to the same inode (data blocks) on disk. Both filenames are equal references to the same data. When one filename is deleted, the inode and data remain until all hard links are removed. The `ls -li` command showed both files sharing the same inode number()
 
--
--
--
--
+-  **Inode behavior - Symbolic Link:** When `og_log` was removed, `sym_log` became a broken link. Symbolic links store the *path* to the target file, not the inode itself. When the target file is deleted, the symlink points to a non-existent location, resulting in "No such file or directory" error. The symlink still exists but is unusable.
 
 ---
 
@@ -185,7 +187,7 @@ This documentation provides a complete walkthrough of Linux file security, permi
 ---
 
 **What was done:**
-
+-
 -
 
 **Explanations & Observations:**
