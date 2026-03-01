@@ -62,6 +62,7 @@ This documentation provides a complete walkthrough of Linux file security, permi
   - **Critical config files** (e.g., `/etc/passwd`, application configs) should have `+i` attribute to prevent accidental or malicious modification.
   - **Audit logs** should use `+a` (append-only) to allow logging while preventing tampering.
 
+---
 
 ## Scenario 2 – Log Overwrite Incident
 <p>
@@ -77,7 +78,6 @@ This documentation provides a complete walkthrough of Linux file security, permi
 #### Step 3 - Applying Overwrite Prevention Mechanism And Creating Backup
 ![Log Creation](Scenario_2/log_overwrite_03.png)
 
----
 
 **What was done:**
 
@@ -99,7 +99,7 @@ This documentation provides a complete walkthrough of Linux file security, permi
    - **Incident Response** depends on unaltered logs to reconstruct attack timelines.
    - **Chain of custody** is broken if metadata is not preserved during backup
 
-
+---
 
 ## Scenario 3 – Permission & Ownership Drift
 <p>
@@ -117,7 +117,7 @@ This documentation provides a complete walkthrough of Linux file security, permi
 #### Step 5 - Copying Files & Folders WITH Preservation Flags (cp -r)
 ![Copying With Preservation -R](Scenario_3/permission_drift_CP-R.png)
 
----
+
 
 **What was done: cp alone**
 
@@ -173,7 +173,22 @@ This documentation provides a complete walkthrough of Linux file security, permi
 
 **What was done:**
 - Created a directory structure: `mkdir -p ~/app/{source,destination}` and `mkdir -p ~/scripts`
-- 
+- Created a source file named `config.json` in the `/app/source` direectory with dummy content containing app data, db info and fake api key.
+- Created deployment script `~/scripts/deployment.sh` using relative paths:
+  ```bash
+  #!/bin/bash
+  echo "Deployment starting ... "
+  cp ../app/source/config.json ../app/destination/
+  echo "Deploment done"
+  ```
+- Made the script executable: `chmod +x ~/scripts/deployment.sh`
+- Navigated to the home directory and tried to execute the script, but had a failure with the cp command using the relative path.
+- The script was the corrected to have the full absolute paths for copying from source to destination, and finally th script run from any location.
+
+**Explanations & Observations:**
+- **Why relative paths caused issues:** Relative paths (`../app/source/`) depend on the current working directory from which the script is executed. When the script was run from `~` (home directory), it looked for `../app/source/` relative to `~`, which doesn't exist. The script expected to be run from a specific location, making it fragile and error-prone.
+
+- **How absolute paths fixed the problem:** Absolute paths (`/home/username/app/source/`) specify the exact location from the root directory (`/`), regardless of where the script is executed. This ensures the script works consistently from any location in the filesystem.
 ---
 
 ## Scenario 5 – Monitoring Failure After Log Cleanup
