@@ -252,14 +252,24 @@ This documentation provides a complete walkthrough of Linux file security, permi
 
 **What was done:**
 
--
--
+- A new directory named `shared_project` was created using `sudo mkdir /shared_project`.
+- The directory's group ownership was set to `project_team` and full permissions (rwx) was assigned to the group.
+- A sticky bit was assigned to the directory using `chmod +t /shared_project`.
+- A user from the project_team `dev_user` was switched to, and `dev_user` creates a file named `dev_file.txt` using `touch /shared_project/dev_file.txt`
+- A switch was then made to a user belonging to the project_team, aka `intern_a`.
+- The intern run a touch command within the shared_project directory to create a file named `intern_file.txt`, and was succesful.
+- `intern_a` runs `rm /shared_project/dev_file.txt` and gets an `Operation not permitted output`.
 
 **Explanations & Observations:**
 
--
--
--
+- **Mechanism used - Sticky Bit (`chmod +t`):** The sticky bit is a special permission that modifies directory deletion behavior. When set on a directory, it restricts file deletion so that only the file owner, directory owner, or root can delete files—regardless of write permissions. This is represented by a `t` in the permissions display
+
+- **How it solved the problem:** Without the sticky bit, any user with write permission to `/shared_project` could delete any file in it (as seen in Scenario 1). After applying `chmod +t`, `intern_a` successfully created `intern_file.txt` (showing collaboration works) but received "Operation not permitted" when attempting to delete `dev_file.txt` owned by `dev_user`. This prevents accidental or malicious deletion while preserving shared collaboration.
+
+- For **security reasoning**:
+  - It prevents data loss, as developers can't accidentally delete teammates work in a shared directory
+  - Only file owners control their own files, enforcing ownership responsibility.
+  -  Users can create and modify their own files without fear of deletion by others.
 
 
 ## Overall Conclusion
