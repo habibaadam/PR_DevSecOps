@@ -119,16 +119,38 @@ This documentation provides a complete walkthrough of Linux file security, permi
 
 ---
 
-**What was done:**
-- 
--
+**What was done: cp alone**
+
+- Two directories were created with `mkdir -p source_dir destination_dir`
+- In `source_dir`, a file named `config.txt` was created and filled with some content, alongside a script file named `script.sh`
+- Varying permissions such as the `444` was set for the config file, and `755` was set for the script file. The config file's ownership was changed to another user `dev_user` using `sudo chown dev_user config.txt`, and for the script, it's owner and group was set to also `dev_user` with `sudo chown dev_user:dev_user script.sh`.
+- `ls -l` was run to verify the varrying permissions for both files.
+- `cp source_dir/* destination_dir/` was executed, and then, the `destination_dir` directory was checked to verify the files and permissions had changed to the user running the `cp` command.
+
+**What was done: cp - p**
+- A new file named `private_file.txt` was created in the source directory with some dummy content, and its permission was sdt to `644`.
+- Ownserhip of the file was given to another user `aminat`, using `sudo chown aminat private_file.txt`. Permissions of the file were checked using `ls -l source_dir/private_text.txt`
+- `sudo cp -p source_dir/private_file.txt destination_dir/` was executed, and finally a permission check was done, to confirm the permissions were preserved.
+
+**What was done: cp - r**
+
+- A new directory was created using `mkdir recursive_dir`, with recursive_dir being the name of the directory.
+- `cp -r sourcee_dir/ recursive_dir/` was executed.
+- `cd recursive_dir/sourc_dir` was run to check and confirm the copied content and structure of the directory.
+
 
 **Explanations & Observations:**
 
--
--
--
--
+- **Observations on permission and ownership behavior (cp alone):**
+   - When using `cp` without flags, the copied files inherited the permissions of the user executing the command, not the original file permissions. The copying user becomes the new owner, and default umask settings determine the new permissions.
+   -  Both `config.txt` and `script.sh` originally owned by `dev_user` became owned by the user running the `cp` command. Group ownership also changed to the primary group of the copying user. This is because `cp` creates a *new file* in the destination, not a true copy of the inode.
+
+
+- **Observations on permission and ownership behavior (cp -p):**
+  - Using `cp -p` preserved the original permissions (`644`), ownership (`aminat`), and timestamps of `private_file.txt`. The `-p` flag maintains the file's identity across copy operations, ensuring security contexts remain intact. This requires `sudo` to preserve ownership to a different user.
+
+- **Observations on permission and ownership behavior (cp -r):**
+  - The `-r` (recursive) flag copied the entire directory structure and its contents. However, without `-p`, permissions and ownership reverted to the copying user's defaults.
 
 ---
 
