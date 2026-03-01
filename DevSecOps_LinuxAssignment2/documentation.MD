@@ -209,15 +209,26 @@ This documentation provides a complete walkthrough of Linux file security, permi
 ---
 
 **What was done:**
--
--
+
+- Dummy logs directory were created using `mkdir -p /logs/configs`. New files namd `app.log` and `db.conf` were created, and some fake db passwords, api key information, token and connection logs were sent into these files as content, to help simulate searching with `grep`.
+- `grep -r "db" ~/logs/config` command was executed, and results of the file with db was returned.
+- `grep -r -e "connection" -e "token"  ~/logs/config ` was run to chain different search terms together, and results matching the keywords were returned.
+- `cat << EOF > ~/logs/configs/pattern.txt` was run, and keywords such as `secret`, `password`, `token` was inputted, and finally `EOF` to exit.
+- Finally `grep -r -f ~logs/configs/pattern.txt ~/logs/configs > ~/logs/results.txt` was executed to store results of the search based on the written keywords in `patterns.txt`
+- An additional log content was appended into `results.txt` using `echo "More logs" >> ~/logs/results.txt`. And finally, the entire content of results.txt was viewed.
 
 **Explanations & Observations:**
 
--
--
--
--
+- **Recursive scanning (grep -r):** The `-r` flag searched through all files within `~/logs/config` directory and its subdirectories, finding matches for "db" in both `app.log` and `db.conf`. This eliminates the need to manually search each file individually, making it essential for scanning large directory structures in production environments.
+
+- **Multiple expressions (grep -e):** Using `-e` allowed chaining multiple search patterns in a single command. `grep -r -e "connection" -e "token"` searched for both keywords simultaneously, returning all lines containing either term. This is more efficient than running separate grep commands and combining results.
+
+- **Pattern file (grep -f):** The `pattern.txt` file contained multiple keywords (`secret`, `password`, `token`), and `grep -f` used this file as input to search for all patterns at once.
+
+- **Why both redirection operators are used:**
+  - **`>` (Single redirect):** Overwrites the file completely. `grep -r -f pattern.txt ~/logs/configs > ~/logs/results.txt` created a fresh `results.txt` with only the current scan results.
+  - **`>>` (Append redirect):** Adds content without destroying existing data. `echo "More logs" >> ~/logs/results.txt` appended additional information to `results.txt` without losing the grep results.
+
 
 ---
 
