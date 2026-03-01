@@ -179,7 +179,7 @@ This documentation provides a complete walkthrough of Linux file security, permi
   #!/bin/bash
   echo "Deployment starting ... "
   cp ../app/source/config.json ../app/destination/
-  echo "Deploment done"
+  echo "Deployment done"
   ```
 - Made the script executable: `chmod +x ~/scripts/deployment.sh`
 - Navigated to the home directory and tried to execute the script, but had a failure with the cp command using the relative path.
@@ -296,5 +296,17 @@ This documentation provides a complete walkthrough of Linux file security, permi
   - Only file owners control their own files, enforcing ownership responsibility.
   -  Users can create and modify their own files without fear of deletion by others.
 
+---
+
 
 ## Overall Conclusion
+
+Through this assignment, I demonstrated essential Linux security concepts for DevSecOps environments:
+
+1. **File Attributes** (`chattr +i`, `+a`) provide protection beyond traditional permissions, preventing deletion and tampering
+2. **Log Integrity** requires append-only attributes and metadata preservation for forensics and compliance
+3. **Permission Preservation** prevents security drift during file operations using `cp -p` flags
+4. **Absolute Paths** ensure deployment reliability across varying execution contexts
+5. **Link Behavior** - Hard links survive deletion; symbolic links break—critical for monitoring systems
+6. **Secret Scanning** with pattern files enables proactive credential exposure detection
+7. **Sticky Bit** balances shared collaboration with file protection in multi-user directories
