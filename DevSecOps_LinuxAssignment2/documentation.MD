@@ -160,10 +160,20 @@ This documentation provides a complete walkthrough of Linux file security, permi
 <strong>Context:</strong> A deployment script copied incorrect data due to relative path usage. The objective is to reproduce and fix the issue using absolute paths.
 </p>
 
+#### Step 1 - Creating Directory Structure and Deployment Script
+#### Step 2 - Running Script with Relative Paths (Failure)
+![Creating_dir_and_scripts](Scenario_4/relative_path_script.png)
 
-- Incoming Step Evaluation Soon
+#### Step 3 - Correcting Script with Absolute Paths (Success)
+![Fixing Script](Scenario_4/absolute_path_fix.png)
+
+### Running Script and Testing From Other Directories
+![Fixed_script_test](Scenario_4/absolute_path_test.png)
 
 
+**What was done:**
+- Created a directory structure: `mkdir -p ~/app/{source,destination}` and `mkdir -p ~/scripts`
+- 
 ---
 
 ## Scenario 5 – Monitoring Failure After Log Cleanup
