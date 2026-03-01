@@ -25,3 +25,17 @@ A comprehensive hands-on assignment covering Linux user management, password sec
 - Security best practices
 
 ---
+
+#### 2. Linux & DevSecOps 2
+📁 **Folder:** `DevSecOps_LinuxAssignment2/`
+
+[View Linux Assignment 2 Documentation](DevSecOps_LinuxAssignment2/documentation.MD)
+
+**Topics Covered:**
+- Shared directory access control & deletion prevention
+- File attributes (chattr +i, +a) vs permissions
+- Log integrity & overwrite prevention
+- Permission & ownership preservation during file operations
+- Hard links vs symbolic links behavior
+- Sensitive data scanning with grep
+- Sticky bit for shared directory stability
