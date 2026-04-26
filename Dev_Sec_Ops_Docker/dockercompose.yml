@@ -1,0 +1,10 @@
+###
+Objective - Write a docker-compose.yml for a Redis cache and a Node app.
+- Give Redis a 'tmpfs' volume (because it's a cache!).
+- Mount your local '/src' folder to the Node app
+  using a bind mount.
+- Map the Node app's port '3000' to the host.
+- Run 'docker compose up -d'.
+###
+
+
