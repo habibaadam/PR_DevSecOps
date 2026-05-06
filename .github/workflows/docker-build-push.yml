@@ -8,11 +8,13 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "DevSecOps_Beginner_Lab/**"           # Specifying the direectory that triggers the workflow
+      - "DevSecOps_Beginner_Lab/**"           # Changes to the lab directory
+      - ".github/workflows/docker-build-push.yml"  # Changes to this workflow file itself
   pull_request:
     branches: [ main ]
     paths:
       - "DevSecOps_Beginner_Lab/**"
+      - ".github/workflows/docker-build-push.yml"
 
 # Environment variables that are available to all jobs below.
 env:
