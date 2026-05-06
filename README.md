@@ -39,3 +39,37 @@ A comprehensive hands-on assignment covering Linux user management, password sec
 - Hard links vs symbolic links behavior
 - Sensitive data scanning with grep
 - Sticky bit for shared directory stability
+
+---
+
+#### 3. Docker Container Security Lab
+📁 **Folder:** `Dev_Sec_Ops_Docker/`
+
+[View Docker Security Lab Documentation](Dev_Sec_Ops_Docker/documentation.md)
+
+A hands-on lab progressively hardening a Node.js application containerised with Docker, moving from an insecure default configuration to a fully hardened runtime.
+
+**Topics Covered:**
+- Running containers as root and the privilege escalation risk
+- Preventing secret leakage with `.dockerignore`
+- Multi-stage builds to reduce image size and attack surface
+- Runtime hardening: `--read-only`, `--cap-drop ALL`, `--no-new-privileges`
+- Linux capabilities and seccomp profiles
+
+---
+
+#### 4. Docker Hub, CI/CD & Security Automation — Beginner Lab
+📁 **Folder:** `DevSecOps_Beginner_Lab/`
+
+[View Beginner Lab Documentation](DevSecOps_Beginner_Lab/documentation.md)
+
+An entry-level lab that mirrors a real-world DevSecOps workflow: building and publishing a containerised web application, then automating the entire pipeline with security scanning and smoke testing.
+
+**Topics Covered:**
+- Pulling and inspecting public images from Docker Hub
+- Building a Flask web application with an HTML front-end and JSON health endpoint
+- Writing a secure, production-grade Dockerfile
+- Tagging, pushing, and pulling images from Docker Hub
+- Sharing images for cross-machine reproducibility
+- GitHub Actions CI/CD pipeline 
+- Generating and managing Docker Hub access tokens securely
