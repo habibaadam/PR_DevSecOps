@@ -6,6 +6,11 @@ This repository contains hands-on assignments and projects completed as part of 
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor!)
 ![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=for-the-badge&logo=terraform&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Docker Hub](https://img.shields.io/badge/Docker%20Hub-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
 
 
@@ -71,5 +76,5 @@ An entry-level lab that mirrors a real-world DevSecOps workflow: building and pu
 - Writing a secure, production-grade Dockerfile
 - Tagging, pushing, and pulling images from Docker Hub
 - Sharing images for cross-machine reproducibility
-- GitHub Actions CI/CD pipeline 
+- GitHub Actions CI/CD pipeline
 - Generating and managing Docker Hub access tokens securely
