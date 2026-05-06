@@ -1,3 +1,5 @@
+// version 2
+
 // Import the built-in http module to create a web server
 const http = require('http')
 
