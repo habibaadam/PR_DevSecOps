@@ -17,14 +17,14 @@ node_modules
 # will never be copied into any image layer. If a .env file reaches
 # your image, every credential inside it is readable by anyone
 # who can pull the image from a registry.
-#.env
-#.env.local
-#.env.production
-#.env.*
-#*.pem
-#*.key
-#*.cert
-#*.p12
+.env
+.env.local
+.env.production
+.env.*
+*.pem
+*.key
+*.cert
+*.p12
 
 # Docker files
 # There is no reason to ship the Dockerfile inside the image it produces.
