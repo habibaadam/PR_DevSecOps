@@ -41,7 +41,7 @@ The application is intentionally simple — its purpose is to demonstrate contai
 ---
 
 
-# Initial Step - Generating a Docker Hub Access Token
+## Initial Step - Generating a Docker Hub Access Token
 
 The objective of this step is to generate a scoped access token for Docker Hub to authenticate without exposing an account password — following the principle of least privilege for credentials.
 
@@ -127,7 +127,7 @@ The objective of this phase is to transition from image consumer to image creato
 
 ---
 
-### Step 1 — Create the Web Application
+### Step 1 — Creating the Web Application
 
 #### Key Concepts Demonstrated
 
@@ -135,12 +135,13 @@ The objective of this phase is to transition from image consumer to image creato
 - Environment variable injection for configurable behaviour
 - Jinja2 HTML templating
 
-#### Step 1 — Write `app.py` and `templates/index.html`
+#### Write `app.py` and `templates/index.html`
 
 > Check [`app.py`](app.py) and [`templates/index.html`](templates/index.html) for the full content.
 
 
-### Step 2 — Write a Secure Dockerfile
+
+### Step 2 — Writing A Secure Dockerfile
 
 #### Key Concepts Demonstrated
 
@@ -153,7 +154,7 @@ The objective of this phase is to transition from image consumer to image creato
 > Check [`dockerfile`](dockerfile) for the full content.
 
 
-### Step 3 — Build and Test Locally
+### Step 3 — Building and Testing Locally
 
 #### Key Concepts Demonstrated
 
@@ -161,70 +162,41 @@ The objective of this phase is to transition from image consumer to image creato
 - Running and verifying a container locally before pushing
 - Testing both the home page and the `/health` endpoint
 
-#### Part 1 — Building the Image
+#### Step 3.1 — Building the Image
 
 **Command:**
 ```bash
 docker build -t my-web-app .
 ```
 
-**Screenshot:**
-
-![Local build output](screenshots/Phase_1/local_build.png)
-
-**Observation:**
--
--
-
----
-
-#### Step 2 — Run and Test Locally
-
+#### Step 3.2 — Running and Testing Locally
 **Commands:**
 ```bash
-docker run -d -p 5000:5000 --name webapp-test my-web-app
+docker run -d -p 5001:5000 --name webapp-test my-web-app
+```
+**Screenshot:**
+
+![Local build output](screenshots/Phase_1/running_web_app.png)
+
+```
+NB: Instead of port 5000, the port mapping was changed to 5001 because an important running process was utilizing port 5000
 ```
 
 **Screenshot:**
 
-![Container running, browser test](screenshots/Phase_1/local_run_test.png)
+![Container running, browser test](screenshots/Phase_1/localhost_5001.png)
 
-**Observation:**
--
--
-
+![Container running, browser test, health check](screenshots/Phase_1//localhost_5001:health.png)
 ---
 
-#### Step 3 — Stop and Remove the Test Container
+#### Step 3.3 — Stopping and Removing The Test Container
 
 **Command:**
 ```bash
 docker rm -f webapp-test
 ```
 
-**Screenshot:**
-
-![Container removed](screenshots/Phase_1/cleanup_local.png)
-
-**Observation:**
--
--
-
-**What was done:**
--
--
-
-**Reasons Why:**
--
--
-
-**Security/System Implications:**
--
--
-
----
-
-### Part 4 — Push to Docker Hub
+### Step 4 — Pushing to Docker Hub
 
 #### Key Concepts Demonstrated
 
@@ -239,16 +211,6 @@ docker rm -f webapp-test
 docker login -u your-dockerhub-username
 ```
 
-**Screenshot:**
-
-![Docker Hub login](screenshots/Phase_1/docker_login.png)
-
-**Observation:**
--
--
-
----
-
 #### Step 2 — Tag and Push the Image
 
 **Commands:**
@@ -259,7 +221,9 @@ docker push your-dockerhub-username/my-web-app:v1.0.0-habi
 
 **Screenshot:**
 
-![Tag and push output](screenshots/Phase_1/tag_push.png)
+![Tag and push output](screenshots/Phase_1/docker_hub_push.png)
+
+
 
 **Observation:**
 -
@@ -275,7 +239,7 @@ docker push your-dockerhub-username/my-web-app:v1.0.0-habi
 
 ---
 
-### Part 5 — Pull Your Own Image
+### Step 5 — Pull Your Own Image
 
 #### Key Concepts Demonstrated
 
@@ -309,7 +273,7 @@ docker run -d -p 5000:5000 --name pulled-app your-dockerhub-username/my-web-app:
 
 ---
 
-### Part 6 — Share with Others
+### Step 6 — Share with Others
 
 #### Key Concepts Demonstrated
 
