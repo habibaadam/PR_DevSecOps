@@ -63,10 +63,12 @@ time docker build -f Dockerfile -t insecure-app .
 ```
 
 **Observed output / screenshot:**
+
 ![First Build](screenshots/The_Insecure_Default/first_build.png)
 -
 
 **Observation:**
+
 -
 -
 
@@ -84,6 +86,7 @@ time docker build -f Dockerfile -t insecure-app .
 ![Second Build Cache](screenshots/The_Insecure_Default/second_build_cached.png)
 
 **Observation:**
+
 -
 -
 
@@ -102,6 +105,7 @@ time docker build -f Dockerfile -t insecure-app .
 
 
 **Observation:**
+
 -
 -
 
@@ -120,6 +124,7 @@ curl http://localhost:3000
 ![Insecure Container](screenshots/The_Insecure_Default/insecure_container_run.png)
 
 **Observation:**
+
 -
 -
 
@@ -135,6 +140,7 @@ cat /app/.env
 ![Baked Credentials](screenshots/The_Insecure_Default/baked_credentials.png)
 
 **Observation:**
+
 -
 -
 
@@ -199,6 +205,7 @@ curl http://localhost:3000
 ![Non-root app running](screenshots/Running_Non_Root_User/non_root_apprun.png)
 
 **Observation:**
+
 -
 -
 
@@ -221,6 +228,7 @@ touch /bin/backdoor
 ![App user permission details](screenshots/Running_Non_Root_User/app_user_permissions.png)
 
 **Observation:**
+
 -
 -
 
@@ -299,6 +307,7 @@ docker run --rm secure-copy-app find /app -type f
 ![Secure app env check](screenshots/Protecting_Secrets/secure_app_inspect.png)
 
 **Observation:**
+
 -
 -
 
@@ -317,6 +326,7 @@ cat /app/.env
 ![Secure app inspect](screenshots/Protecting_Secrets/secure_app_env.png)
 
 **Observation:**
+
 -
 -
 
@@ -386,6 +396,7 @@ docker images
 ![Comparing image sizes](screenshots/Multi_Stage_Builds/comparing_sizes.png)
 
 **Observation:**
+
 -
 -
 
@@ -404,6 +415,7 @@ curl http://localhost:3000
 ![Running multistage app](screenshots/Multi_Stage_Builds/running_multistage.png)
 
 **Observation:**
+
 -
 -
 
@@ -421,11 +433,12 @@ git --version
 apt-get install wget
 ```
 
-**Observed output / screenshot:**v
+**Observed output / screenshot:**
 
 ![Reduced attack surface](screenshots/Multi_Stage_Builds/reduced_attack_surface.png)
 
 **Observation:**
+
 -
 -
 
@@ -504,9 +517,11 @@ docker stop $(docker ps -q)
 ```
 
 **Observed output / screenshot:**
+
 ![Read only File System Flag](screenshots/Runtime_Hardening/read_only_fs.png)
 
 **Observations:**
+
 -
 -
 
@@ -528,10 +543,12 @@ docker stop $(docker ps -q)
 ```
 
 **Observed output / screenshot:**
+
 ![Memory and Cpu Limits](screenshots/Runtime_Hardening/mem_cpu_limits.png)
 
 
 **Observations:**
+
 -
 -
 
@@ -548,6 +565,7 @@ curl http://localhost:3000
 ```
 
 **Observed output / screenshot:**
+
 ![Linux Cap Drop](screenshots/Runtime_Hardening/linux_cap_dropped.png)
 
 
@@ -569,6 +587,7 @@ docker run -d -p 3000:3000 \
 ![Fully hardened container](screenshots/Runtime_Hardening/fully_hardened_container.png)
 
 **Observation:**
+
 -
 -
 
@@ -581,6 +600,7 @@ docker run -d -p 3000:3000 \
 ![Further inspection](screenshots/Runtime_Hardening/further_inspection.png)
 
 **Observation:**
+
 -
 -
 
