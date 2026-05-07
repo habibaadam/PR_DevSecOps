@@ -85,7 +85,7 @@ time docker build -f Dockerfile -t insecure-app .
 
 **Observation:**
 -
-
+-
 
 #### Step 3 — Third Build (Code Change — Cache Invalidation)
 
@@ -120,6 +120,7 @@ curl http://localhost:3000
 ![Insecure Container](screenshots/The_Insecure_Default/insecure_container_run.png)
 
 **Observation:**
+-
 -
 
 #### Step 5 — Confirming the Secret Leak
@@ -157,10 +158,6 @@ docker system prune -af
 1.
 2.
 
-### Summary
-
-
-
 ## Scenario 2 — Running as a Non-Root User
 
 ### Objective
@@ -197,7 +194,7 @@ docker run -p 3000:3000 nonroot-app
 curl http://localhost:3000
 ```
 
-**Screenshot:**
+**Observed output / screenshot:**
 
 ![Non-root app running](screenshots/Running_Non_Root_User/non_root_apprun.png)
 
@@ -217,7 +214,7 @@ apt-get install curl
 touch /bin/backdoor
 ```
 
-**Screenshot:**
+**Observed output / screenshot:**
 
 ![Permission boundary verification](screenshots/Running_Non_Root_User/verify_permissions_boundary.png)
 
@@ -226,7 +223,8 @@ touch /bin/backdoor
 **Observation:**
 -
 -
--
+
+
 ---
 
 #### Step 5 — Resetting the Environment
@@ -236,7 +234,7 @@ touch /bin/backdoor
 docker system prune -af
 ```
 
-**Screenshot:**
+**Observed output / screenshot:**
 
 ![Pruning](screenshots/Running_Non_Root_User/s2_pruning.png)
 
@@ -250,9 +248,6 @@ docker system prune -af
 
 1.
 2.
-
-### Summary
-
 
 
 ---
@@ -299,7 +294,7 @@ docker run --rm secure-copy-app find /app -type f
 
 ```
 
-**Screenshot:**
+**Observed output / screenshot:**
 
 ![Secure app env check](screenshots/Protecting_Secrets/secure_app_inspect.png)
 
@@ -317,7 +312,7 @@ docker exec -it $(docker ps -q) sh
 cat /app/.env
 ```
 
-**Screenshot:**
+**Observed output / screenshot:**
 
 ![Secure app inspect](screenshots/Protecting_Secrets/secure_app_env.png)
 
@@ -334,7 +329,7 @@ cat /app/.env
 docker system prune -af
 ```
 
-**Screenshot:**
+**Observed output / screenshot:**
 
 ![Pruning](screenshots/Protecting_Secrets/s3_pruning.png)
 
@@ -348,10 +343,6 @@ docker system prune -af
 
 1.
 2.
-
-### Summary
-
-
 
 ---
 
@@ -390,7 +381,7 @@ docker build -f Dockerfile.multistage -t multistage-app .
 docker images
 ```
 
-**Screenshot:**
+**Observed output / screenshot:**
 
 ![Comparing image sizes](screenshots/Multi_Stage_Builds/comparing_sizes.png)
 
@@ -408,7 +399,7 @@ docker run -p 3000:3000 multistage-app
 curl http://localhost:3000
 ```
 
-**Screenshot:**
+**Observed output / screenshot:**
 
 ![Running multistage app](screenshots/Multi_Stage_Builds/running_multistage.png)
 
@@ -430,7 +421,7 @@ git --version
 apt-get install wget
 ```
 
-**Screenshot:**
+**Observed output / screenshot:**v
 
 ![Reduced attack surface](screenshots/Multi_Stage_Builds/reduced_attack_surface.png)
 
@@ -452,7 +443,7 @@ apt-get install wget
 docker system prune -af
 ```
 
-**Screenshot:**
+**Observed output / screenshot:**
 
 ![Pruning](screenshots/Multi_Stage_Builds/s4_pruning.png)
 
@@ -466,10 +457,6 @@ docker system prune -af
 
 1.
 2.
-
-### Summary
-
-
 
 ---
 
@@ -516,8 +503,8 @@ Stopping The Container
 docker stop $(docker ps -q)
 ```
 
-**Screenshot:**
-[Read only File System Flag](screenshots/Runtime_Hardening/read_only_fs.png)
+**Observed output / screenshot:**
+![Read only File System Flag](screenshots/Runtime_Hardening/read_only_fs.png)
 
 **Observations:**
 -
@@ -540,8 +527,8 @@ Stopping The Container
 docker stop $(docker ps -q)
 ```
 
-**Screenshot:**
-[Memory and Cpu Limits](screenshots/Runtime_Hardening/mem_cpu_limits.png)
+**Observed output / screenshot:**
+![Memory and Cpu Limits](screenshots/Runtime_Hardening/mem_cpu_limits.png)
 
 
 **Observations:**
@@ -560,8 +547,8 @@ Confirming The Application Responds By Running
 curl http://localhost:3000
 ```
 
-**Screenshot:**
-[Linux Cap Drop](screenshots/Runtime_Hardening/linux_cap_dropped.png)
+**Observed output / screenshot:**
+![Linux Cap Drop](screenshots/Runtime_Hardening/linux_cap_dropped.png)
 
 
 #### Step 4 — Running the Fully Hardened Container
@@ -577,7 +564,7 @@ docker run -d -p 3000:3000 \
   multistage-app
 ```
 
-**Screenshot:**
+**Observed output / screenshot:**
 
 ![Fully hardened container](screenshots/Runtime_Hardening/fully_hardened_container.png)
 
@@ -589,7 +576,7 @@ docker run -d -p 3000:3000 \
 
 #### Step 5 — Further Inspection
 
-**Screenshot:**
+**Observed output / screenshot:**
 
 ![Further inspection](screenshots/Runtime_Hardening/further_inspection.png)
 
@@ -606,7 +593,7 @@ docker run -d -p 3000:3000 \
 docker system prune -af
 ```
 
-**Screenshot:**
+**Observed output / screenshot:**
 
 ![Pruning](screenshots/Runtime_Hardening/s5_pruning.png)
 
@@ -621,10 +608,8 @@ docker system prune -af
 1.
 2.
 
-### Summary
 
-
-## Key Takeaways
+## Conclusion
 
 
 
