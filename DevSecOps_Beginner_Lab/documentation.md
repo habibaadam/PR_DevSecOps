@@ -370,7 +370,7 @@ docker rmi my-web-app your-dockerhub-username/my-web-app:v1.0.0-john nginx:alpin
 
 ## Reflection
 
-1. The experience of the first pipleline was very valuable. Having to diagnose two seperate causes(a deprecated action version nd a real CVE in the base image) and fixing the, before a push could succeed is the exactly the kind of iteration that happens on real teams. It reframed the failure not as a mistake but as the pipeline doing its job correctly.
+1. The experience of the first pipleline was very valuable. Having to diagnose two seperate causes(a deprecated action version nd a real CVE in the base image) and fixing them before a push could succeed is the exactly the kind of iteration that happens on real teams. It reframed the failure not as a mistake but as the pipeline doing its job correctly.
 2. The most concrete learning from this lab was seeing security as something built into the workflow rather than added at the end. The Trivy scan sitting between the build and the push means a vulnerable image physically cannot reach the registry. It is not a policy or a reminder, it is a gate. That distinction did not fully register until the pipeline failed on the first run because of an outdated base image, which made the point more effectively than any explanation could.
 
 ## Conclusion
