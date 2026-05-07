@@ -6,7 +6,6 @@
 ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 ![Trivy](https://img.shields.io/badge/Trivy-1904DA?style=for-the-badge&logo=aquasecurity&logoColor=white)
 
----
 
 ## Overview
 
@@ -21,10 +20,10 @@ By completing these phases, I developed a concrete understanding of:
 - How GitHub Actions automates the entire workflow and gates pushes behind a Trivy vulnerability scan
 
 
----
+
 ## The Sample Application
 
-The application is intentionally simple — its purpose is to demonstrate containerisation and CI/CD concepts, not complex application logic.
+The application built intentionally simple. Its purpose is to demonstrate containerisation and CI/CD concepts, not complex application logic.
 
 **`app.py`** — starts a Flask web server on port 5000 and exposes two routes:
 - `/` — renders an HTML greeting page, injecting a configurable node name via a Jinja2 template
@@ -38,18 +37,18 @@ The application is intentionally simple — its purpose is to demonstrate contai
 
 **`.dockerignore`** — prevents development artefacts, `.git`, `.env` files, and Markdown from entering the image.
 
----
 
 
-## Initial Step - Generating a Docker Hub Access Token
 
-The objective of this step is to generate a scoped access token for Docker Hub to authenticate without exposing an account password — following the principle of least privilege for credentials.
+## Initial Step Taken - Generating a Docker Hub Access Token
+
+The objective of this step is to generate a scoped access token for Docker Hub to authenticate without exposing an account password — following the principle of least privilege.
 
 **What was done:**
 - Logged in to hub.docker.com
 - Navigated to: Avatar → Account Settings → Security → New Access Token
 - Named the token `lab-token` and selected **Read & Write** permissions
-- Copied the generated token immediately
+- Copied the generated token immediately.
 
 
 **Security Implications:**
@@ -61,27 +60,27 @@ The objective of this step is to generate a scoped access token for Docker Hub t
 
 ## Phase 0 — Pull and Inspect a Public Container
 
-The objective is to act as an image consumer: pull an existing public image from Docker Hub, run it, inspect it, and observe how Docker manages layers and containers.
+In this phase, I acted as an image consumer — pulling an existing public image from Docker Hub, running it, inspecting it, and observing how Docker manages layers and containers.
 
-### Key Concepts Demonstrated
+#### Key Concepts Demonstrated
 
 - `docker pull` and image layer downloading
 - Running a detached container with port mapping
 - Inspecting running containers and logs
 - Cleaning up with `docker rm -f`
 
+---
 ### Steps & Observations
 
 #### Step 1 — Pulling the Nginx Alpine Image
 
-**Command:**
 ```bash
 docker pull nginx:alpine
 ```
 
 #### Step 2 — Running the Container
 
-**Command:**
+
 ```bash
 docker run -d -p 8080:80 --name my-nginx nginx:alpine
 ```
@@ -89,7 +88,6 @@ docker run -d -p 8080:80 --name my-nginx nginx:alpine
 
 #### Step 3 — Inspect Running Containers and Logs
 
-**Commands:**
 ```bash
 docker ps
 docker logs my-nginx
@@ -100,9 +98,9 @@ docker logs my-nginx
 ![Pulling nginx:alpine](screenshots/Phase_0/pull_inspect.png)
 
 
-### Step 4 - Confirming On Browser on Port 8080
+#### Step 4 - Confirming On Browser on Port 8080
 
-**Commands:**
+
 ```bash
 # Opening http://localhost:8080 in browser
 ```
@@ -112,7 +110,7 @@ docker logs my-nginx
 ![Running nginx container](screenshots/Phase_0/nginx-check.png)
 
 **Overall Observation:**
-- An image built and published by another person was pulled and downlaoded unto my machine
+- An image built and published by another person was pulled and downloaded.
 - A container was derived/created from the pulled image.
 - Port mapping made the image accessible from the browser.
 
@@ -123,7 +121,7 @@ docker logs my-nginx
 ## Phase 1 — Build, Push, Pull & Share Your Own Image
 
 
-The objective of this phase is to transition from image consumer to image creator: build a Flask web application, containerise it securely, push it to Docker Hub, pull it back, and share it with others.
+In this phase, I transitioned from image consumer to image creator — building a Flask web application, containerising it securely, pushing it to Docker Hub, pulling it back to verify, and sharing it with others.
 
 ---
 
@@ -164,13 +162,12 @@ The objective of this phase is to transition from image consumer to image creato
 
 #### Step 3.1 — Building the Image
 
-**Command:**
 ```bash
 docker build -t my-web-app .
 ```
 
 #### Step 3.2 — Running and Testing Locally
-**Commands:**
+
 ```bash
 docker run -d -p 5001:5000 --name webapp-test my-web-app
 ```
@@ -179,7 +176,7 @@ docker run -d -p 5001:5000 --name webapp-test my-web-app
 ![Local build output](screenshots/Phase_1/running_web_app.png)
 
 ```
-NB: Instead of port 5000, the port mapping was changed to 5001 because an important running process was utilizing port 5000
+NB: Instead of port 5000, the port mapping was changed to 5001 because an important running process was utilizing port 5000.
 ```
 
 **Screenshot:**
@@ -204,177 +201,105 @@ docker rm -f webapp-test
 - Tagging an image with a registry path and personal identifier
 - Uploading image layers to the registry
 
-#### Step 1 — Log In to Docker Hub
+#### Step 4.1 — Logging In to Docker Hub
 
 **Command:**
 ```bash
 docker login -u your-dockerhub-username
 ```
 
-#### Step 2 — Tag and Push the Image
+#### Step 4.2 — Tagging and Pushing the Image
 
 **Commands:**
 ```bash
-docker tag my-web-app your-dockerhub-username/my-web-app:v1.0.0-habi
-docker push your-dockerhub-username/my-web-app:v1.0.0-habi
+docker tag my-web-app your-dockerhub-username/my-web-app:v1.0.0-johm
+docker push your-dockerhub-username/my-web-app:v1.0.0-johm
 ```
 
 **Screenshot:**
 
 ![Tag and push output](screenshots/Phase_1/docker_hub_push.png)
 
-
-
-**Observation:**
--
--
-
-**What was done:**
--
--
-
-**Reasons Why:**
--
--
-
 ---
 
-### Step 5 — Pull Your Own Image
+### Step 5 — Pulling Own Image
 
 #### Key Concepts Demonstrated
 
 - Simulating a fresh environment by removing the local image
 - Pulling from Docker Hub to verify the push succeeded
 
-#### Step 1 — Remove Local Image and Pull from Registry
+#### Step 5.1 — Removing the Local Image and Pulling from Registry
 
 **Commands:**
 ```bash
-docker rmi your-dockerhub-username/my-web-app:v1.0.0-habi
-docker pull your-dockerhub-username/my-web-app:v1.0.0-habi
-docker run -d -p 5000:5000 --name pulled-app your-dockerhub-username/my-web-app:v1.0.0-habi
+docker rmi your-dockerhub-username/my-web-app:v1.0.0-john
+docker pull your-dockerhub-username/my-web-app:v1.0.0-john
+docker run -d -p 5000:5000 --name pulled-app your-dockerhub-username/my-web-app:v1.0.0-john
 ```
 
 **Screenshot:**
 
-![Pull and run from registry](screenshots/Phase_1/pull_own_image.png)
+![Pull and run from registry check](screenshots/Phase_1/pulled_app_5001.png)
 
-**Observation:**
--
--
+![Health check endpoint](screenshots/Phase_1/pulled_app_5001:health.png)
 
-**What was done:**
--
--
 
-**Reasons Why:**
--
--
+### Step 6 — Sharing with Others
 
----
+```
+The pushed image can be shared with others, in the format dockerhub-username/my-web-app:v1.0.0-habi, and the commands mentioned in Step 1 can be run to access the image from the registry
+```
 
-### Step 6 — Share with Others
 
-#### Key Concepts Demonstrated
 
-- Public vs private Docker Hub repositories
-- Cross-machine reproducibility as a core container value
+## Overall Observations After Phase 1
 
-#### Step 1 — Verify Repository Visibility and Share Tag
-
-**Screenshot:**
-
-![Docker Hub public repo](screenshots/Phase_1/share_image.png)
-
-**Observation:**
--
--
-
-**What was done:**
--
--
+**Key things observed:**
+- The `python:3.11-slim` base image produces a significantly smaller image than a full Python image, directly reducing the attack surface.
+- Copying `requirements.txt` before the application code means the `pip install` layer is only re-run when dependencies actually change.
+- The `/health` endpoint proved immediately useful as a machine-readable liveness check, separate from the user-facing home page.
+- Pulling the image from Docker Hub to verify the push is a simple but important habit — it confirms what was pushed is what runs, not just what exists locally
 
 **Security/System Implications:**
--
--
-
-### Checkpoint Answers
-
-1.
-2.
-3.
-
-### Reflection
-
-1.
-2.
-
-### Summary
-
+- Using an access token rather than an account password for `docker login` limits the blast radius of a leaked credential. The token can be revoked without changing the account password
+- A public repository means anyone can pull and run the image; sensitive data must never be baked into the image layers, which is enforced by `.dockerignore` and the absence of `.env` files in the build context
+- The non-root `USER` instruction and the `HEALTHCHECK` instruction are both security and reliability hardening measures that cost nothing to add but meaningfully reduce risk in production
 
 
 ---
 
 ## Phase 2 — Automate with a DevSecOps Pipeline
 
-### Objective
+In this phase, I built a GitHub Actions CI/CD workflow that automatically builds, vulnerability-scans, and pushes the image on every push to `main` — ensuring no unscanned image ever reaches the registry.
 
-Build a GitHub Actions CI/CD workflow that builds, vulnerability-scans, and pushes the image automatically on every push to `main` — ensuring no unscanned image ever reaches the registry.
+Due to the structure of this repository because it contains other project folders, the `.github/workflows` exists at the root, and the project files are placed in `DevSecOps_Beginner_Lab`.
 
 ### Key Concepts Demonstrated
 
-- GitHub Actions workflow syntax and triggers with `paths` filters
-- Storing credentials as encrypted GitHub secrets
-- `docker/build-push-action` for building and loading images
-- Trivy (`aquasecurity/trivy-action`) for scanning before pushing
-- Conditional steps with `if: success()`
+- GitHub Actions workflow syntax and triggers with `paths` filters.
+- Storing credentials as encrypted GitHub secrets.
+- `docker/build-push-action` for building and loading images.
+- Trivy (`aquasecurity/trivy-action`) for scanning before pushing.
+- Conditional steps with `if: success()`.
 - Smoke testing a running container inside the pipeline
 
 ---
 
-### Part 1 — Set Up the GitHub Repository
+### Step 1 — Adding Secrets to GitHub
 
-#### Step 1 — Initialise Git and Push to GitHub
+As noted in the overview, this project lives inside an existing repository (`PR_DevSecOps`) under the `DevSecOps_Beginner_Lab/` folder. No new repository was created — the workflow file was placed at the root `.github/workflows/` and the `paths` filter in the trigger ensures it only runs when files inside `DevSecOps_Beginner_Lab/` change.
 
-**Commands:**
-```bash
-git init
-git add .
-git commit -m "Initial commit: Flask app, Dockerfile, and workflow"
-git branch -M main
-git remote add origin https://github.com/your-github-username/your-repo.git
-git push -u origin main
-```
-
-**Screenshot:**
-
-![Git init and push](screenshots/Phase_2/git_init_push.png)
-
-**Observation:**
--
--
-
----
-
-### Part 2 — Add Secrets to GitHub
-
-#### Step 1 — Add DOCKERHUB_USERNAME and DOCKERHUB_TOKEN
-
-**Screenshot:**
-
-![GitHub secrets configured](screenshots/Phase_2/github_secrets.png)
-
-**Observation:**
--
--
+The only setup required before triggering the pipeline was adding two encrypted secrets to the repository so the workflow could authenticate with Docker Hub.
 
 **What was done:**
--
--
+- Navigated to the repository on GitHub → Settings → Secrets and variables → Actions
+- Added `DOCKERHUB_USERNAME` — the Docker Hub account username
+- Added `DOCKERHUB_TOKEN` — the access token generated in the initial step, pasted directly from where it had been copied
 
 **Security/System Implications:**
--
--
+- Secrets are encrypted at rest and are never exposed in workflow logs — GitHub masks them if they appear in output
+- Using a scoped access token as `DOCKERHUB_TOKEN` rather than the account password means the credential can be revoked without affecting the Docker Hub account itself
 
 ---
 
@@ -382,23 +307,11 @@ git push -u origin main
 
 #### Step 1 — Review `docker-build-push.yml`
 
-**Screenshot:**
+> Check [`docker-build-push.yml`](../.github/workflows/docker-build-push.yml) for the full content and a detailed explanation
 
-![Workflow file in editor](screenshots/Phase_2/workflow_file.png)
-
-**Observation:**
--
--
-
-**What was done:**
--
--
-
-**Reasons Why:**
--
--
-
----
+```
+NB: If this project was done on a repository on it's own, there would be no need to include the `paths` as triggers for both the push and pull requests
+```
 
 ### Part 4 — Trigger the Pipeline
 
@@ -406,47 +319,24 @@ git push -u origin main
 
 **Screenshot:**
 
-![GitHub Actions run in progress](screenshots/Phase_2/actions_run.png)
+![GitHub Actions run in progress](screenshots/Phase_2/pipeline_failure.png)
 
 **Observation:**
--
--
+- After the first commit and push, the results of trigggering the job ended in a failure.
+- The first cause of the failure was the version of trivy stated in the workflow(version 20)
+- The second cause of failure was from a successful trivy scan, hinting at outdated dependencies and base image.
+
+**Fixes:**
+- Updating the yml file to use an up to date version of trivy- version 36
+- Using `python3.13-slim` as the base image in the dockerfile and updating requirements.txt to use latest version of flask which is `flask==3.1.1`.
 
 ---
 
-#### Step 2 — Trivy Scan Results
+#### Step 3 — Successful Push Test
 
 **Screenshot:**
 
-![Trivy vulnerability scan output](screenshots/Phase_2/trivy_scan.png)
-
-**Observation:**
--
--
-
----
-
-#### Step 3 — Successful Push and Smoke Test
-
-**Screenshot:**
-
-![Push and smoke test passed](screenshots/Phase_2/push_smoke_test.png)
-
-**Observation:**
--
--
-
-**What was done:**
--
--
-
-**Reasons Why:**
--
--
-
-**Security/System Implications:**
--
--
+![Push and smoke test passed](screenshots/Phase_2/pipeline_success.png)
 
 ---
 
@@ -461,7 +351,9 @@ docker pull your-dockerhub-username/my-web-app:v1.0.0-habi
 
 **Screenshot:**
 
-![Pull pipeline image](screenshots/Phase_2/pull_pipeline_image.png)
+![Pull pipeline image](screenshots/Phase_2/pulled_ci_system.png)
+
+
 
 **Observation:**
 -
