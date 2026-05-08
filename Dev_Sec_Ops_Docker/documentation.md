@@ -69,8 +69,7 @@ time docker build -f Dockerfile -t insecure-app .
 
 **Observation:**
 
--
--
+- As this is the first build, it takes a bit of time, approximately 0.58seconds
 
 ---
 
@@ -87,8 +86,8 @@ time docker build -f Dockerfile -t insecure-app .
 
 **Observation:**
 
--
--
+- The time it took for the second build is relatively faster than the first build(0.48seconds)
+- Each layer now shows CACHED because Docker re-used each layer from the first build
 
 #### Step 3 — Third Build (Code Change — Cache Invalidation)
 
@@ -106,8 +105,8 @@ time docker build -f Dockerfile -t insecure-app .
 
 **Observation:**
 
--
--
+- After the content of app.js was changed, the ```COPY . . ``` layer was invalidated
+- Every layer above it was also re-executed, introducing the caching problem introduced by the ```COPY ...``` layer.
 
 ---
 
@@ -125,8 +124,8 @@ curl http://localhost:3000
 
 **Observation:**
 
--
--
+- From the output, the current userId indicates that this is the root user
+- The container and everything inside is operated with full unrestricted access
 
 #### Step 5 — Confirming the Secret Leak
 
@@ -141,8 +140,8 @@ cat /app/.env
 
 **Observation:**
 
--
--
+- After opening a shell inside the container, and running the `cat /app.env/` command, it revealed that the credentials were copied alongside the container.
+- Anyone who has acccess to this container can view secrets easily.
 
 #### Final System Resetting
 
@@ -155,14 +154,17 @@ docker system prune -af
 
 ### Checkpoint Answers
 
-1.
-2.
-3.
+1. Running `docker exec -it $(docker ps -q) whoami` printed `root`. This means the process inside the container runs with UID 0 — the same identity that owns system files and binaries on the host. Any action the process takes, or that an attacker can coerce it into taking, is performed with unrestricted privileges inside the container.
+
+2. The first build took several seconds as each layer was downloaded and executed from scratch. The second build completed almost instantly — all layers showed `CACHED` because nothing in the Dockerfile or the build context had changed since the previous run.
+
+3. After editing `app.js`, the first layer that was **not** cached was the `COPY . .` instruction — because the build context had changed. The layer immediately below it, `RUN npm install`, **was** cached. This exposes the problem: `npm install` ran after the cache break even though no dependencies changed.
 
 ### Reflection
 
-1.
-2.
+1. If the image contained real AWS access keys in `.env` and was pushed to a public Docker Hub repository, automated bots that continuously scan public registries for secrets would detect and exfiltrate the credentials within minutes. An attacker could then use them to spin up infrastructure, exfiltrate data from S3, or rack up significant charges — all before the exposure is noticed.
+
+2. To prevent `RUN npm install` from re-running on every code change, the `COPY` instruction should be split: copy `package.json` and `package-lock.json` first, run `npm install`, then copy the rest of the application code. Docker caches each layer independently, so the install layer is only invalidated when the dependency files themselves change, not when `app.js` does.
 
 ## Scenario 2 — Running as a Non-Root User
 
