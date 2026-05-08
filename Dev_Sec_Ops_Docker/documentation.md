@@ -369,7 +369,7 @@ In this scenario, I reduced the final image size and attack surface by separatin
 
 ### Dockerfile Used
 
-> Check this file -> [`Dockerfile.nultistage`](./Dockerfile.multistage)
+> Check this file -> [`Dockerfile.multistage`](./Dockerfile.multistage)
 
 ### Key Concepts Demonstrated
 
@@ -387,6 +387,13 @@ In this scenario, I reduced the final image size and attack surface by separatin
 docker build -f Dockerfile.multistage -t multistage-app .
 ```
 
+#### Step 2 - Building The Previous Images
+
+**Command:**
+```bash
+docker build -f Dockerfile            -t insecure-app     .
+docker build -f Dockerfile.nonroot    -t nonroot-app      .
+```
 ---
 
 #### Step 2 — Comparing Image Sizes
@@ -402,31 +409,11 @@ docker images
 
 **Observation:**
 
--
--
+- `insecure app` and `nonroot-app` have the same sizes -> 398MB
+- `multistage-app` is way smaller than the other apps with -> 72.6MB
 
----
 
-#### Step 3 — Running the Multi-Stage Image
-
-**Commands:**
-```bash
-docker run -p 3000:3000 multistage-app
-curl http://localhost:3000
-```
-
-**Observed output / screenshot:**
-
-![Running multistage app](screenshots/Multi_Stage_Builds/running_multistage.png)
-
-**Observation:**
-
--
--
-
----
-
-#### Step 4 — Confirming the Reduced Attack Surface
+#### Step 3 — Confirming the Reduced Attack Surface
 
 **Commands:**
 ```bash
@@ -444,8 +431,8 @@ apt-get install wget
 
 **Observation:**
 
--
--
+- Most of the commands and tools return `not found` because they do not exist in the runtime image
+- `npm` returned a version because with most node images, npm comes bundled together with it.
 
 ---
 
@@ -467,14 +454,15 @@ docker system prune -af
 
 ### Checkpoint Answers
 
-1.
-2.
-3.
+1. `docker images` showed `insecure-app` at **398 MB** and `multistage-app` at **72.6 MB** — a reduction of roughly **325 MB**. The difference comes from stripping the full Node.js SDK, npm cache, and build toolchain that were only needed to compile the application.
+
+2. `curl`, `git`, and `apt-get` all returned `not found` inside `multistage-app`. Of these, `git` and `curl` would be most valuable to an attacker — `git` enables cloning external payloads and exfiltrating code, while `curl` is the primary tool for downloading malware, reaching command-and-control servers, and exfiltrating data over HTTP.
+
+3. Running `curl http://localhost:3000` from the host returned the expected response correctly. This confirms that removing build tools has no effect on the runtime behaviour of the application — the compiled artefacts were copied into the final stage and the app runs fine without any of the tools used to build it.
 
 ### Reflection
 
-1.
-2.
+1. Multi-stage builds enforce the principle of least functionality at the image level. An attacker who gains code execution inside `multistage-app` is working in a near-empty environment — no package manager, no network utilities, no compiler. This dramatically raises the cost of post-exploitation even if the initial vulnerability is the same as in the full image.
 
 ---
 
