@@ -5,7 +5,7 @@ services:
     build: .                          # Build from Dockerfile in this directory
     container_name: dockerquiz-app
     ports:
-      - "5000:5000"                   # HOST:CONTAINER — access at http://localhost:5000
+      - "5001:5000"                  # HOST:CONTAINER — access at http://localhost:5000
     environment:
       - MONGO_URI=mongodb://mongo:27017/  # "mongo" = the service name below (Docker DNS)
     depends_on:
