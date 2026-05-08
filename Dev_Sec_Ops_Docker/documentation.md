@@ -515,8 +515,8 @@ docker stop $(docker ps -q)
 
 **Observations:**
 
--
--
+- After applying the first flag, and attempting to a file inside the app, an error appeared, specifying that the system was `read-only`
+
 
 ### Step 3 - Applying The Memory and Cpu Limits
 
@@ -542,8 +542,7 @@ docker stop $(docker ps -q)
 
 **Observations:**
 
--
--
+- As specified in the command, the output returned `134217728` which is `128Mb` alongside `500000000` NanoCpus allocated for the system as limits.
 
 ### Step 3.1 - Dropping Linux Capabilities
 
@@ -581,8 +580,7 @@ docker run -d -p 3000:3000 \
 
 **Observation:**
 
--
--
+- After applying all the limits, the fully hardened container still functions as it was intended to.
 
 ---
 
@@ -594,8 +592,8 @@ docker run -d -p 3000:3000 \
 
 **Observation:**
 
--
--
+- Further inspections were made, such as attempting to create a file, inspecting the limits for cpu and memory, and also performing a ping test
+
 
 ---
 
@@ -612,19 +610,23 @@ docker system prune -af
 
 ### Checkpoint Answers
 
-1.
-2.
-3.
+1. Running `touch /tmp/test` produced no error — the file was created successfully. This is because `--tmpfs /tmp` mounts a fresh, writable in-memory filesystem at `/tmp` even though `--read-only` locks the rest of the container's filesystem. Without `--tmpfs /tmp`, Node.js would crash on startup since it needs a writable `/tmp`; the tmpfs flag provides that writable scratch space while keeping everything else read-only.
+
+2. `docker inspect` returned `134217728`. Dividing by 1,048,576 gives **128 MB** — matching the `--memory=128m` flag passed at runtime.
+
+3. `ping 8.8.8.8` succeeded even with `--cap-drop=ALL`. Traditionally, ping requires `CAP_NET_RAW` to open a raw socket for ICMP. However, on Linux kernels 4.11 and later, the kernel added support for unprivileged ICMP echo sockets (`IPPROTO_ICMP`) that do not require any capability at all. Because Docker containers run on the host kernel, ping bypasses the capability drop via this newer socket type — it is not an oversight in the cap-drop, it is a deliberate kernel feature.
 
 ### Reflection
 
-1.
-2.
+1. Runtime hardening flags operate at the kernel boundary, not inside the container. `--read-only` and `--cap-drop=ALL` make post-exploitation significantly harder, but they interact with kernel features in non-obvious ways — as the ping test shows. A complete hardening posture requires understanding both the flags and the kernel version they run on, and should be validated with tests rather than assumed from configuration alone.
+
 
 
 ## Conclusion
 
+Working through these five scenarios gave me a practical understanding of how Docker security is built in layers — each scenario addressed a distinct class of risk that the previous one left open. Running as root, baking in secrets, shipping build tools, and leaving runtime behaviour unrestricted are all independent problems that require independent solutions. No single fix covers all of them.
 
+The progression from the insecure default to a fully hardened container showed that security is not a single configuration switch — it is a series of deliberate decisions made at build time, image composition time, and runtime. The final container is smaller, runs with fewer privileges, cannot write to its own filesystem, and carries none of the tools an attacker would reach for first.
 
 ## References
 
