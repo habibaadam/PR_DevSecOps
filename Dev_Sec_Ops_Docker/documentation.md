@@ -251,10 +251,10 @@ docker system prune -af
 ### Checkpoint Answers
 
 1. Running `docker exec -it $(docker ps -q) whoami` printed `appuser` — confirming the process no longer runs as root.
-
 ![whoami](screenshots/Running_Non_Root_User/whoami.png)
 
 2. Running `cat /app/.env` inside the container succeeded — `appuser` could read the file. This shows that switching to a non-root user does **not** protect secrets stored inside the image; it only removes kernel-level privileges. Filesystem permissions still apply normally, so any file readable by `appuser` is still exposed to anyone who can exec into the container.
+![app user permissions](screenshots/Running_Non_Root_User/app_user_permissions.png)
 
 3. Running `apt-get update` failed with a permission denied error. The relevant part of the error message was the complaint about being unable to open or write to `/var/lib/apt/lists/` — directories owned by root. This confirms that `appuser` cannot perform administrative or package-level operations, which is exactly the protection non-root users provide.
 
@@ -312,8 +312,8 @@ docker run --rm secure-copy-app find /app -type f
 
 **Observation:**
 
--
--
+- The output after trying to find the content of the app directory this time, did not return the `.env` file
+
 
 ---
 
@@ -331,8 +331,8 @@ cat /app/.env
 
 **Observation:**
 
--
--
+- The output returned `No such file or directory` because dockerignore file removed the `.env`.
+
 
 ---
 
@@ -349,14 +349,15 @@ docker system prune -af
 
 ### Checkpoint Answers
 
-1.
-2.
-3.
+1. Running `docker run --rm secure-copy-app find /app -type f` listed the application files but `.env` was **not** among them. The `.dockerignore` file stripped it from the build context before `COPY . .` ran, so it never entered the image layer at all.
+
+2. After creating `test.pem` in the project folder and rebuilding, the `find` output **did** include `test.pem`. Because only `.env` was listed in `.dockerignore`, `COPY . .` copied everything else — including the new certificate file — into the image without restriction.
+
+3. After temporarily removing `.dockerignore` and rebuilding, the `find` output now included `.env` alongside the other files. With no exclusion rules in place, `COPY . .` copied the entire build context verbatim, pulling the secret file straight into the image. Adding `.dockerignore` back restored the protection.
 
 ### Reflection
 
-1.
-2.
+1. `.dockerignore` prevents secrets from entering the image in the first place — it is a build-time control, not a runtime one. It must be treated as a mandatory file in any project that has a `COPY . .` instruction, since there is no other mechanism to retroactively remove a file that was baked into a layer.
 
 ---
 
