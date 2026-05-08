@@ -208,8 +208,8 @@ curl http://localhost:3000
 
 **Observation:**
 
--
--
+- The application is now running as a non root user as the userId is now 999 and not as the root lole before.
+- Access is now restricted.
 
 ---
 
@@ -231,8 +231,8 @@ touch /bin/backdoor
 
 **Observation:**
 
--
--
+- The current user is unable to execute the actions above as they ar not the root user.
+- Any attacker that gets access to the application should inherit these restrictions.
 
 
 ---
@@ -250,15 +250,17 @@ docker system prune -af
 
 ### Checkpoint Answers
 
-1.
-2.
-3.
+1. Running `docker exec -it $(docker ps -q) whoami` printed `appuser` — confirming the process no longer runs as root.
+
+![whoami](screenshots/Running_Non_Root_User/whoami.png)
+
+2. Running `cat /app/.env` inside the container succeeded — `appuser` could read the file. This shows that switching to a non-root user does **not** protect secrets stored inside the image; it only removes kernel-level privileges. Filesystem permissions still apply normally, so any file readable by `appuser` is still exposed to anyone who can exec into the container.
+
+3. Running `apt-get update` failed with a permission denied error. The relevant part of the error message was the complaint about being unable to open or write to `/var/lib/apt/lists/` — directories owned by root. This confirms that `appuser` cannot perform administrative or package-level operations, which is exactly the protection non-root users provide.
 
 ### Reflection
 
-1.
-2.
-
+1. Switching to a non-root user closes off privilege escalation paths and prevents an attacker from using the container process to tamper with system binaries or call privileged kernel APIs. It does not, however, protect secrets baked into the image — those require `.dockerignore`, multi-stage builds, or runtime secret injection.
 
 ---
 
