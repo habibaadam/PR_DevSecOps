@@ -10,6 +10,7 @@ This repository contains hands-on assignments and projects completed as part of 
 ![Docker Hub](https://img.shields.io/badge/Docker%20Hub-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
 
@@ -20,6 +21,7 @@ This repository contains hands-on assignments and projects completed as part of 
 
 #### 1. Linux & DevSecOps Fundamentals
 A comprehensive hands-on assignment covering Linux user management, password security auditing, and department-based access control implementation.
+
 [View Linux Assignment Documentation](DevSecOps_LinuxAssignment1/documentation.MD)
 
 **Topics Covered:**
@@ -46,6 +48,8 @@ A comprehensive hands-on assignment covering Linux user management, password sec
 - Sticky bit for shared directory stability
 
 ---
+
+### Projects
 
 #### 3. Docker Container Security Lab
 📁 **Folder:** `Dev_Sec_Ops_Docker/`
@@ -78,3 +82,22 @@ An entry-level lab that mirrors a real-world DevSecOps workflow: building and pu
 - Sharing images for cross-machine reproducibility
 - GitHub Actions CI/CD pipeline
 - Generating and managing Docker Hub access tokens securely
+
+---
+
+#### 5. DockerQuiz — Learn Docker by Playing
+📁 **Folder:** `DockerQuiz/`
+
+[View DockerQuiz Documentation](DockerQuiz/documentation.md)
+
+A Kahoot-style interactive quiz application built with Python + Flask, MongoDB, and Mongo Express — wired together as a real 3-container Docker application. Designed as a beginner-friendly, zero-prerequisites gateway into Docker and container concepts: you learn Docker by using Docker, not just reading about it.
+
+**Topics Covered:**
+- Docker Compose orchestration of multiple services
+- Container-to-container communication via Docker's built-in DNS (service names as hostnames)
+- Named volumes for data persistence across container restarts
+- Bridge networks and network isolation
+- `depends_on` service startup ordering
+- MongoDB as a containerised database
+- Mongo Express as a visual database admin UI
+- Live document writes from a Flask app to MongoDB
