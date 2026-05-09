@@ -213,4 +213,13 @@ The app then became accessible at `http://localhost:5001` with no conflict.
 
 ---
 
-## Conclusion and Reflection
+## Conclusion
+
+This project was a practical demonstration of how Docker Compose transforms multi-container orchestration from a complex manual process into something reproducible with a single command.
+
+One of the most interesting things I took away from this is how each container is isolated by its concern — the Flask app handles the web logic, MongoDB handles data persistence, and Mongo Express handles database visibility, yet all three communicate seamlessly through a shared bridge network. They are independent, but not disconnected. That separation of concerns is what makes containerised architectures so clean and maintainable.
+
+I also got a clearer picture of what Docker DNS actually means in practice. Instead of hardcoding IP addresses, the Flask app connects to MongoDB simply using the service name `mongo` as the hostname. Docker resolves that name to the correct container automatically, which means the same `docker-compose.yml` works regardless of what IP addresses Docker assigns at runtime.
+
+
+Overall, this project showed me that Docker Compose is not just a convenience tool — it is a way of expressing infrastructure as code.
