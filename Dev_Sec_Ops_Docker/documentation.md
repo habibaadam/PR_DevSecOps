@@ -55,7 +55,7 @@ In this scenario, I examined what a basic Dockerfile looks like, why it is insec
 
 ### Steps & Observations
 
-#### Step 1 — Build the Image (First Build)
+#### Step 1: Build the Image (First Build)
 
 **Command:**
 ```bash
@@ -73,7 +73,7 @@ time docker build -f Dockerfile -t insecure-app .
 
 ---
 
-#### Step 2 — Second Build (Cached)
+#### Step 2: Second Build (Cached)
 
 **Command:**
 ```bash
@@ -89,7 +89,7 @@ time docker build -f Dockerfile -t insecure-app .
 - The time it took for the second build is relatively faster than the first build(0.48seconds)
 - Each layer now shows CACHED because Docker re-used each layer from the first build
 
-#### Step 3 — Third Build (Code Change — Cache Invalidation)
+#### Step 3: Third Build (Cache Invalidation)
 
 Added `// version 2` comment to the top of `app.js`, then rebuilt.
 
@@ -110,7 +110,7 @@ time docker build -f Dockerfile -t insecure-app .
 
 ---
 
-#### Step 4 — Running the Container
+#### Step 4: Running the Container
 
 **Command:**
 ```bash
@@ -127,7 +127,7 @@ curl http://localhost:3000
 - From the output, the current userId indicates that this is the root user
 - The container and everything inside is operated with full unrestricted access
 
-#### Step 5 — Confirming the Secret Leak
+#### Step 5: Confirming the Secret Leak
 
 **Commands:**
 ```bash
@@ -143,13 +143,7 @@ cat /app/.env
 - After opening a shell inside the container, and running the `cat /app.env/` command, it revealed that the credentials were copied alongside the container.
 - Anyone who has acccess to this container can view secrets easily.
 
-#### Final System Resetting
 
-**Commands:**
-```bash
-docker system prune -af
-```
-![Pruning](screenshots/The_Insecure_Default/s1_pruning.png)
 
 
 ### Checkpoint Answers
@@ -166,7 +160,7 @@ docker system prune -af
 
 2. To prevent `RUN npm install` from re-running on every code change, the `COPY` instruction should be split: copy `package.json` and `package-lock.json` first, run `npm install`, then copy the rest of the application code. Docker caches each layer independently, so the install layer is only invalidated when the dependency files themselves change, not when `app.js` does.
 
-## Scenario 2 — Running as a Non-Root User
+## Scenario 2: Running as a Non-Root User
 
 ### Objective
 
@@ -184,16 +178,17 @@ In this scenario, I stopped the application from running as root and observed co
 
 ### Steps & Observations
 
-#### Step 1 — Resetting the Environment
+#### Step 1: Resetting the Environment
 
 **Command:**
 ```bash
 docker system prune -af
 ```
+![Pruning](screenshots/The_Insecure_Default/s1_pruning.png)
 
 ---
 
-#### Step 2 — Building and Running the Non-Root Image
+#### Step 2: Building and Running the Non-Root Image
 
 **Commands:**
 ```bash
@@ -213,7 +208,7 @@ curl http://localhost:3000
 
 ---
 
-#### Step 3 — Verifying the Permission Boundary
+#### Step 3: Verifying the Permission Boundary
 
 **Commands:**
 ```bash
@@ -237,7 +232,7 @@ touch /bin/backdoor
 
 ---
 
-#### Step 5 — Resetting the Environment
+#### Step 5:  Resetting the Environment
 
 **Command:**
 ```bash
@@ -264,7 +259,7 @@ docker system prune -af
 
 ---
 
-## Scenario 3 — Protecting Secrets with .dockerignore
+## Scenario 3: Protecting Secrets with .dockerignore
 
 ### Objective
 
@@ -282,7 +277,7 @@ In this scenario, I prevented sensitive files from ever entering the image build
 
 ### Steps & Observations
 
-#### Step 1 — Creating the `.dockerignore` File
+#### Step 1: reating the `.dockerignore` File
 
 The following entries were added to exclude sensitive and unnecessary files from the build context:
 
@@ -297,7 +292,7 @@ node_modules
 
 ---
 
-#### Step 2 — Rebuilding the Image and Inspecting for the Secret
+#### Step 2: Rebuilding the Image and Inspecting for the Secret
 
 **Commands:**
 ```bash
@@ -317,7 +312,7 @@ docker run --rm secure-copy-app find /app -type f
 
 ---
 
-#### Step 3 — Confirming Secret Cannot Be Read
+#### Step 3: Confirming Secret Cannot Be Read
 
 **Command:**
 ```bash
@@ -336,7 +331,7 @@ cat /app/.env
 
 ---
 
-#### Step 4 — Resetting the Environment
+#### Step 4: Resetting the Environment
 
 **Command:**
 ```bash
@@ -361,7 +356,7 @@ docker system prune -af
 
 ---
 
-## Scenario 4 — Multi-Stage Builds
+## Scenario 4: Multi-Stage Builds
 
 ### Objective
 
@@ -380,14 +375,14 @@ In this scenario, I reduced the final image size and attack surface by separatin
 
 ### Steps & Observations
 
-#### Step 1 — Building the Multi-Stage Image
+#### Step 1: Building the Multi-Stage Image
 
 **Command:**
 ```bash
 docker build -f Dockerfile.multistage -t multistage-app .
 ```
 
-#### Step 2 - Building The Previous Images
+#### Step 1.2: Building The Previous Images
 
 **Command:**
 ```bash
@@ -396,7 +391,7 @@ docker build -f Dockerfile.nonroot    -t nonroot-app      .
 ```
 ---
 
-#### Step 2 — Comparing Image Sizes
+#### Step 2: Comparing Image Sizes
 
 **Command:**
 ```bash
@@ -413,7 +408,7 @@ docker images
 - `multistage-app` is way smaller than the other apps with -> 72.6MB
 
 
-#### Step 3 — Confirming the Reduced Attack Surface
+#### Step 3: Confirming the Reduced Attack Surface
 
 **Commands:**
 ```bash
@@ -436,12 +431,12 @@ apt-get install wget
 
 ---
 
-### Step 5 - Confirming MultiStage App Works
+### Step 5: Confirming MultiStage App Works
 
 ![Running multistage app](screenshots/Multi_Stage_Builds//running_multistage.png)
 
 
-#### Step 6 — Resetting the Environment
+#### Step 6: Resetting the Environment
 
 **Command:**
 ```bash
@@ -466,7 +461,7 @@ docker system prune -af
 
 ---
 
-## Scenario 5 — Runtime Hardening
+## Scenario 5: Runtime Hardening
 
 ### Objective
 
@@ -486,14 +481,14 @@ In this scenario, I applied Linux kernel-level restrictions to a running contain
 
 ### Steps & Observations
 
-#### Step 1 - Rebuilding MultiStage App
+#### Step 1: Rebuilding MultiStage App
 
 ```bash
 
 docker build -f Dockerfile.multistage -t multistage-app .
 ```
 
-### Step 2 - Applying The First Flag - Read Only File System
+### Step 2: Applying The First Flag - Read Only File System
 
 ```bash
 docker run --read-only --tmpfs /tmp -p 3000:3000 multistage-app
@@ -518,7 +513,7 @@ docker stop $(docker ps -q)
 - After applying the first flag, and attempting to a file inside the app, an error appeared, specifying that the system was `read-only`
 
 
-### Step 3 - Applying The Memory and Cpu Limits
+### Step 3: Applying The Memory and Cpu Limits
 
 ```bash
 docker run --memory="128m" --cpus="0.5" -p 3000:3000 multistage-app
@@ -544,7 +539,7 @@ docker stop $(docker ps -q)
 
 - As specified in the command, the output returned `134217728` which is `128Mb` alongside `500000000` NanoCpus allocated for the system as limits.
 
-### Step 3.1 - Dropping Linux Capabilities
+### Step 3.1: Dropping Linux Capabilities
 
 ```bash
 docker run --cap-drop=ALL -p 3000:3000 multistage-app
@@ -561,7 +556,7 @@ curl http://localhost:3000
 ![Linux Cap Drop](screenshots/Runtime_Hardening/linux_cap_dropped.png)
 
 
-#### Step 4 — Running the Fully Hardened Container
+#### Step 4: Running the Fully Hardened Container
 
 **Command:**
 ```bash
@@ -584,7 +579,7 @@ docker run -d -p 3000:3000 \
 
 ---
 
-#### Step 5 — Further Inspection
+#### Step 5: Further Inspection
 
 **Observed output / screenshot:**
 
@@ -597,7 +592,7 @@ docker run -d -p 3000:3000 \
 
 ---
 
-#### Step 6 — Resetting the Environment
+#### Step 6: Resetting the Environment
 
 **Command:**
 ```bash
