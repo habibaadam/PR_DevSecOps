@@ -12,7 +12,9 @@
 
 In this project, I orchestrated a multi-container application using Docker Compose. The application is a Docker-themed quiz built with Flask (Python), backed by MongoDB for data persistence, and paired with Mongo Express for visual database browsing.
 
-Rather than running three separate `docker run` commands and manually connecting containers, A single file`docker-compose.yml` fis used to define the entire stack — the application image, the database, the network, and the volumes.
+Rather than running three separate `docker run` commands and manually connecting containers, A single file`docker-compose.yml` is used to define the entire stack — the application image, the database, the network, and the volumes.
+
+>Find detailed explanation within file [Docker-compose.yml](Docker-compose.yml)
 
 **What I covered in this project:**
 - Building a custom Docker image from a Dockerfile
