@@ -215,7 +215,7 @@ Before deploying, I expected:
 
 **Screenshot:**
 
-![Level 7 Stack Outputs](screenshots/level_7/custom_resouce_with_lambda.png)
+![Level 7 Stack Outputs](screenshots/level_7/custom_resource_with_lambda.png)
 
 
 ### Lessons Learned
@@ -225,7 +225,6 @@ Before deploying, I expected:
 
 ## Overall Reflection
 
-### What I Predicted vs What Actually Happened
 
 ### What I Would Explore Next
 
@@ -233,7 +232,7 @@ Before deploying, I expected:
 
 ## Conclusion
 
----
+--- 
 
 ## References
 
