@@ -29,7 +29,7 @@ By completing these levels, I developed a practical understanding of:
 
 ---
 
-## Level 5 — [Compute & Wiring: EC2, Security Groups & Intrinsic Functions]
+## Level 5 — Compute & Wiring: EC2, Security Groups & Intrinsic Functions
 
 ### What This Level Demonstrates
 This level demonstrates how to provision an EC2 instance with a security group, and how to use intrinsic functions to dynamically configure resources based on parameters and other resource attributes.
@@ -94,7 +94,7 @@ If something like the instance type is changed, CloudFormation will replace the 
 
 ---
 
-## Level 6 — [Composition: Nested Stacks]
+## Level 6 — Composition: Nested Stacks
 
 ### What This Level Demonstrates
 This level demonstrates how to break down complex infrastructure into reusable nested stacks, allowing for better organization and modularity of CloudFormation templates. Nested stacks enable you to manage related resources together and reuse templates across different stacks.
@@ -170,66 +170,56 @@ Before deploying, I expected:
 
 ---
 
-## Level 7 — [Dynamic Intelligence: Custom Resources]
+## Level 7 — Dynamic Intelligence: Custom Resources
 
 ### What This Level Demonstrates
+This level demonstrates how to extend CloudFormation's capabilities by creating custom resources that can execute arbitrary logic during stack operations. Custom resources allow you to perform actions that are not natively supported by CloudFormation, such as invoking AWS Lambda functions or making API calls to external services.
+
+For this level, I created a custom resource that invokes a Lambda function during stack creation, update, and deletion. The Lambda function performs specific logic and returns a response to CloudFormation, allowing the stack operation to proceed or fail based on the outcome of the Lambda execution.
 
 ### Template Overview
 
-> Template file: [`level7.yaml`](templates/custom_resource.yaml)
+> Template file: [`custom_resource.yaml`](templates/custom_resource.yaml)
 
 **Key resources defined:**
--
--
--
+- **Custom Resource Lambda Function:** A Lambda function that handles the lifecycle events (Create, Update, Delete) of the custom resource.
+- **Custom Resource:** A resource that triggers the Lambda function during stack operations, allowing for custom logic to be executed.
 
-**New CloudFormation features introduced:**
--
--
 
 ### Prediction
 
 Before deploying, I expected:
+- The custom resource to invoke the Lambda function during stack creation, update, and deletion.
+- The Lambda function to perform the specified logic and return a response to CloudFormation, allowing the stack to proceed with the operation.
+- Any errors in the Lambda function would cause the stack operation to fail, triggering a rollback to maintain infrastructure consistency.
+
 
 ### Steps & Observations
 
-#### Step 1: Creating the Stack
-
-**Command / Console action:**
-
+#### Step 1: Creating the Stack And Observing Stack Results
 
 **Screenshot — Stack Events:**
 
-![Level 7 Stack Events](screenshots/level7_stack_events.png)
+![Level 7 Stack Events](screenshots/level_7/events.png)
 
-**Observation:**
+
 
 #### Step 2: Verifying the Deployed Resources
 
 **Screenshot:**
 
-![Level 7 Resources](screenshots/level7_resources.png)
+![Level 7 Resources](screenshots/level_7/resources.png)
 
-**Observation:**
 
-#### Step 3: [Additional verification — e.g. testing an endpoint, checking outputs]
-
-**Screenshot:**
-
-![Level 7 Verification](screenshots/level7_verification.png)
-
-**Observation:**
-
-#### Step 4: Deleting the Stack
+#### Step 3 - Checking The Outputs
 
 **Screenshot:**
 
-![Level 7 Stack Deleted](screenshots/level7_stack_deleted.png)
+![Level 7 Stack Outputs](screenshots/level_7/custom_resouce_with_lambda.png)
 
 
 ### Lessons Learned
-
--
+- Custom resources provide a powerful way to extend CloudFormation's capabilities, allowing for dynamic and complex operations that are not natively supported.
 
 ---
 
