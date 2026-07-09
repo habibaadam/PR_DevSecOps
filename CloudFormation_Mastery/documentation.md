@@ -17,7 +17,7 @@ The three levels I worked through each demonstrate a distinct concept:
 
 - **Level 6 — [Composition: Nested Stacks]:** Demonstrates how to break down complex infrastructure into reusable nested stacks.
 
-- **Level 7 — [ Dynamic Intelligence: Custom Resources]:** Demonstrates how to extend CloudFormation's capabilities by creating custom resources that can execute arbitrary logic during stack operations.
+- **Level 7 — [Dynamic Intelligence: Custom Resources]:** Demonstrates how to extend CloudFormation's capabilities by creating custom resources that can execute arbitrary logic during stack operations.
 
 By completing these levels, I developed a practical understanding of:
 
