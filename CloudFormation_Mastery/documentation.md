@@ -97,65 +97,76 @@ If something like the instance type is changed, CloudFormation will replace the 
 ## Level 6 — [Composition: Nested Stacks]
 
 ### What This Level Demonstrates
+This level demonstrates how to break down complex infrastructure into reusable nested stacks, allowing for better organization and modularity of CloudFormation templates. Nested stacks enable you to manage related resources together and reuse templates across different stacks.
 
 ### Template Overview
 
-> Template file: [`level6.yaml`](level6.yaml)
+Unlike Level 5, this level uses three separate template files. The two child templates are uploaded to an S3 bucket first, and the parent template references them by URL.
+
+| Template | Location | Role |
+|---|---|---|
+| [`root.yaml`](templates/root.yaml) | Deployed directly via console/CLI | Parent — orchestrates the two nested stacks and passes outputs between them |
+| [`network.yaml`](templates/network.yaml) | Uploaded to S3 | Child — provisions the VPC and public subnet, exports their IDs as outputs |
+| [`compute.yaml`](templates/compute.yaml) | Uploaded to S3 | Child — receives VPC and subnet IDs from the network stack, provisions the EC2 instance and security group |
+
+**How they connect:**
+1. `network.yaml` is deployed first (via `NetworkStack` resource in the parent) and outputs `VpcId` and `SubnetId`
+2. `root.yaml` passes those outputs as parameters into `ComputeStack` using `!GetAtt NetworkStack.Outputs.VpcId`
+3. `compute.yaml` receives those values and uses them to wire the EC2 instance into the correct network
 
 **Key resources defined:**
--
--
--
+- `network.yaml` — `AWS::EC2::VPC`, `AWS::EC2::Subnet`
+- `compute.yaml` — `AWS::EC2::SecurityGroup`, `AWS::EC2::Instance` (with Apache via `UserData`)
+- `root.yaml` — `AWS::CloudFormation::Stack` (×2), wiring the two child stacks together
 
 **New CloudFormation features introduced:**
--
--
+- `AWS::CloudFormation::Stack` — embedding one stack as a resource inside another.
+- `!GetAtt StackName.Outputs.OutputKey` — reading a child stack's output in the parent
+- `TemplateURL` — referencing templates stored in S3
+- `DependsOn` — enforcing that `ComputeStack` waits for `NetworkStack` to finish
 
 ### Prediction
 
 Before deploying, I expected:
+-   The nested stacks to be created successfully, with the network stack provisioning the VPC and subnet first, followed by the compute stack provisioning the EC2 instance and security group.
+
 
 ### Steps & Observations
 
-#### Step 1: Creating the Stack
+#### Step 1: Creating s3 Bucket and Uploading Child Templates
 
-**Command / Console action:**
+**Screenshot — Creating The S3 Bucket:**
+
+![Level 6 Stack Events](screenshots/level_6/bucket_creation.png)
+
+**Screenshot — Uploading Child Templates to S3 And Copying Object URL's Of `network.yaml` and `compute.yaml`:**
+
+![Level 6 Uploading Child Templates](screenshots/level_6/network_template_url.png)
+
+![Level 6 Uploading Child Templates](screenshots/level_6/compute_template_url.png)
+
+#### Step 2: Writing the Parent Template and Creating the Stack
+
+**Screenshot — Creating The Stack:**
+![Level 6 Creating The Stack](screenshots/level_6/nested_root_stack_details.png)
 
 
-**Screenshot — Stack Events:**
+**Screenshot - Observing Stack Dependencies:**
 
-![Level 6 Stack Events](screenshots/level6_stack_events.png)
+![Level 6 Resources](screenshots/level_6/compute_linked_to_network_stack.png)
 
-**Observation:**
+![Level 6 Resources](screenshots/level_6/root_stack_depends_on-template.png)
 
-#### Step 2: Verifying the Deployed Resources
 
-**Screenshot:**
-
-![Level 6 Resources](screenshots/level6_resources.png)
-
-**Observation:**
-
-#### Step 3: Updating the Stack
-
-**Screenshot — Update Stack Events:**
-
-![Level 6 Stack Update](screenshots/level6_stack_update.png)
-
-**Screenshot — Stack Update Complete:**
-![Level 6 Stack Update Complete](screenshots/level6_stack_update_complete.png)
 
 **Observations:**
-
-#### Step 4: Deleting the Stack
-
-**Screenshot:**
-
-![Level 6 Stack Deleted](screenshots/level6_stack_deleted.png)
+- The parent stack successfully created the two nested stacks in the correct order, with the compute stack waiting for the network stack to finish.
+- The outputs from the network stack were correctly passed to the compute stack, allowing the EC2 instance to be provisioned in the correct VPC and subnet.
 
 ### Lessons Learned
-
--
+- Nested stacks help organize and modularize CloudFormation templates, making complex deployments more manageable.
+- Using outputs from one stack as inputs to another allows for dynamic resource configuration and better separation of concerns.
+- Nested stacks can simplify updates and deletions by encapsulating related resources together.
 
 ---
 
@@ -165,7 +176,7 @@ Before deploying, I expected:
 
 ### Template Overview
 
-> Template file: [`level7.yaml`](level7.yaml)
+> Template file: [`level7.yaml`](templates/custom_resource.yaml)
 
 **Key resources defined:**
 -

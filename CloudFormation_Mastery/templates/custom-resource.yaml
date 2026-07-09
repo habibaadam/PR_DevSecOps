@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Level 7 - Custom Resource backed by Lambda to look up a filtered AMI.
+
+Resources:
+  AmiLookupFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: DescribeImagesAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: ec2:DescribeImages
+                Resource: '*'
+
+  AmiLookupFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Runtime: python3.12
+      Handler: index.handler
+      Role: !GetAtt AmiLookupFunctionRole.Arn
+      Timeout: 30
+      Code:
+        ZipFile: |
+          import json
+          import urllib.request
+          import boto3
+
+          def send_response(event, context, status, data):
+              body = json.dumps({
+                  "Status": status,
+                  "Reason": f"See CloudWatch Logs: {context.log_stream_name}",
+                  "PhysicalResourceId": context.log_stream_name,
+                  "StackId": event["StackId"],
+                  "RequestId": event["RequestId"],
+                  "LogicalResourceId": event["LogicalResourceId"],
+                  "Data": data
+              }).encode("utf-8")
+              req = urllib.request.Request(
+                  url=event["ResponseURL"], data=body, method="PUT",
+                  headers={"content-type": "", "content-length": str(len(body))}
+              )
+              urllib.request.urlopen(req)
+
+          def handler(event, context):
+              try:
+                  if event["RequestType"] in ("Create", "Update"):
+                      ec2 = boto3.client("ec2")
+                      images = ec2.describe_images(
+                          Owners=["amazon"],
+                          Filters=[
+                              {"Name": "name", "Values": ["al2023-ami-*-x86_64"]},
+                              {"Name": "state", "Values": ["available"]}
+                          ]
+                      )["Images"]
+                      images.sort(key=lambda i: i["CreationDate"], reverse=True)
+                      ami_id = images[0]["ImageId"]
+                      send_response(event, context, "SUCCESS", {"AmiId": ami_id})
+                  else:
+                      send_response(event, context, "SUCCESS", {})
+              except Exception as e:
+                  send_response(event, context, "FAILED", {"Error": str(e)})
+
+  AmiLookupCustomResource:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt AmiLookupFunction.Arn
+
+Outputs:
+  ResolvedAmiId:
+    Description: The AMI ID discovered dynamically by the Custom Resource
+    Value: !GetAtt AmiLookupCustomResource.AmiId
