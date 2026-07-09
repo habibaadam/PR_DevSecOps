@@ -17,7 +17,7 @@ The three levels I worked through each demonstrate a distinct concept:
 
 - **Level 6 — [Composition: Nested Stacks]:** Demonstrates how to break down complex infrastructure into reusable nested stacks.
 
-- **Level 7 — [ Dynamic Intelligence: Custom Resources]:** [Demonstrates how to extend CloudFormation's capabilities by creating custom resources that can execute arbitrary logic during stack operations.]
+- **Level 7 — [ Dynamic Intelligence: Custom Resources]:** Demonstrates how to extend CloudFormation's capabilities by creating custom resources that can execute arbitrary logic during stack operations.
 
 By completing these levels, I developed a practical understanding of:
 
@@ -32,18 +32,24 @@ By completing these levels, I developed a practical understanding of:
 ## Level 5 — [Compute & Wiring: EC2, Security Groups & Intrinsic Functions]
 
 ### What This Level Demonstrates
-
+This level demonstrates how to provision an EC2 instance with a security group, and how to use intrinsic functions to dynamically configure resources based on parameters and other resource attributes.
 ### Template Overview
 
 > Template file: [`webserver.yaml`](templates/webserver.yaml)
 
 **Key resources defined:**
--
--
+- **Web Server EC2 Instance:** The virtual server that will run the web application.
+- **Web Server Security Group:** Defines the firewall rules that control inbound and outbound traffic to the EC2 instance.
+- **Key parameters:**
+  - **InstanceType:** Allows the user to specify the type of EC2 instance to launch
+  - **KeyName:** The name of the SSH key pair to allow secure access to the instance.
 
 ### Prediction
 
-Before deploying, I expected:
+Before deploying, I expected the following outcomes due to content of the template:
+- The EC2 instance will be launched with the specified instance type and key pair.
+- The security group will allow inbound traffic according to the defined rules.
+- An output will be generated with the public IP address of the EC2 instance.
 
 ### Steps & Observations
 
@@ -51,38 +57,40 @@ Before deploying, I expected:
 
 **Console action Screenshot:**
 
-![Level 5 Stack Events](screenshots/level5_stack_events.png)
+![Level 5 Stack Events](screenshots/level_5/web_server_stack.png)
 
-**Screenshot — Stack Events:**
+**Stack Outcome/Creation Output Screenshot:**
 
-![Level 5 Stack Events](screenshots/level5_stack_events.png)
+![Level 5 Stack Outcome/Creation Output](screenshots/level_5/web_server_stackinfo.png)
 
 **Observation:**
+- The stack was successfully created, and the EC2 instance is running with the expected configuration, with apache installed and serving a default web page. The security group is correctly configured to allow inbound HTTP traffic on port 80.
 
 #### Step 2: Verifying the Deployed Resources
 
 **Screenshot:**
 
-![Level 5 Resources](screenshots/level5_resources.png)
+![Level 5 Resources](screenshots/level_5/web_server_ip.png)
 
 **Observation:**
+An EC2 instance was successfully created with the specified parameters. The security group was also created and associated with the instance, allowing the expected inbound traffic.
 
-#### Step 3: Deleting the Stack
+#### Step 3: Updating the Stack
+**Screenshot — Updating Instance Type Parameter:**
+![Level 5 Stack Update](screenshots/level_5/web_server_update_parameter.png)
 
-**Command / Console action:**
-```bash
-aws cloudformation delete-stack --stack-name [stack-name]
-```
+**Screenshot — Stack Update Events:**
+![Level 5 Stack Update Events](screenshots/level_5/web_server_update_complete.png)
 
-**Screenshot:**
+**Screenshot - Output after Update:**
+![Level 5 Stack Update Output](screenshots/level_5/web_server_changed_ip_output.png)
 
-![Level 5 Stack Deleted](screenshots/level5_stack_deleted.png)
-
+**Observation:**
+The stack was successfully updated to change the instance type. The EC2 instance was replaced with a new instance of the specified type, and the public IP address changed accordingly.
 
 
 ### Lessons Learned
-
--
+If something like the instance type is changed, CloudFormation will replace the resource rather than update it in place, which can lead to downtime if not planned for.
 
 ---
 
@@ -134,7 +142,10 @@ Before deploying, I expected:
 
 ![Level 6 Stack Update](screenshots/level6_stack_update.png)
 
-**Observation:**
+**Screenshot — Stack Update Complete:**
+![Level 6 Stack Update Complete](screenshots/level6_stack_update_complete.png)
+
+**Observations:**
 
 #### Step 4: Deleting the Stack
 
