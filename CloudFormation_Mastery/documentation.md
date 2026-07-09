@@ -17,7 +17,7 @@ The three levels I worked through each demonstrate a distinct concept:
 
 - **Level 6 — [Composition: Nested Stacks]:** Demonstrates how to break down complex infrastructure into reusable nested stacks.
 
-- **Level 7 — [ Dynamic Intelligence: Custom Resources]:** [One line: what this level demonstrates]
+- **Level 7 — [ Dynamic Intelligence: Custom Resources]:** [Demonstrates how to extend CloudFormation's capabilities by creating custom resources that can execute arbitrary logic during stack operations.]
 
 By completing these levels, I developed a practical understanding of:
 
@@ -35,7 +35,7 @@ By completing these levels, I developed a practical understanding of:
 
 ### Template Overview
 
-> Template file: [`level5.yaml`](level5.yaml)
+> Template file: [`webserver.yaml`](templates/webserver.yaml)
 
 **Key resources defined:**
 -
@@ -49,12 +49,9 @@ Before deploying, I expected:
 
 #### Step 1: Creating the Stack
 
-**Command / Console action:**
-```bash
-aws cloudformation deploy \
-  --template-file level5.yaml \
-  --stack-name [stack-name]
-```
+**Console action Screenshot:**
+
+![Level 5 Stack Events](screenshots/level5_stack_events.png)
 
 **Screenshot — Stack Events:**
 
@@ -81,9 +78,7 @@ aws cloudformation delete-stack --stack-name [stack-name]
 
 ![Level 5 Stack Deleted](screenshots/level5_stack_deleted.png)
 
-### Troubleshooting
 
-> *(If applicable — describe any errors encountered, what the Stack Events showed, and how it was resolved)*
 
 ### Lessons Learned
 
@@ -117,11 +112,7 @@ Before deploying, I expected:
 #### Step 1: Creating the Stack
 
 **Command / Console action:**
-```bash
-aws cloudformation deploy \
-  --template-file level6.yaml \
-  --stack-name [stack-name]
-```
+
 
 **Screenshot — Stack Events:**
 
@@ -150,10 +141,6 @@ aws cloudformation deploy \
 **Screenshot:**
 
 ![Level 6 Stack Deleted](screenshots/level6_stack_deleted.png)
-
-### Troubleshooting
-
-> *(If applicable)*
 
 ### Lessons Learned
 
@@ -187,12 +174,7 @@ Before deploying, I expected:
 #### Step 1: Creating the Stack
 
 **Command / Console action:**
-```bash
-aws cloudformation deploy \
-  --template-file level7.yaml \
-  --stack-name [stack-name] \
-  --capabilities CAPABILITY_IAM
-```
+
 
 **Screenshot — Stack Events:**
 
@@ -222,9 +204,6 @@ aws cloudformation deploy \
 
 ![Level 7 Stack Deleted](screenshots/level7_stack_deleted.png)
 
-### Troubleshooting
-
-> *(If applicable)*
 
 ### Lessons Learned
 
