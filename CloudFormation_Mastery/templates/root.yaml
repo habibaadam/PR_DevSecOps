@@ -1,0 +1,28 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Level 6 - Parent template composing network + compute nested stacks.
+
+Parameters:
+  TemplateBucketName:
+    Type: String
+    Description: S3 bucket where child templates are stored.
+
+Resources:
+  NetworkStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Sub 'https://${TemplateBucketName}.s3.amazonaws.com/network.yaml'
+      TimeoutInMinutes: 10
+
+  ComputeStack:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: NetworkStack
+    Properties:
+      TemplateURL: !Sub 'https://${TemplateBucketName}.s3.amazonaws.com/compute.yaml'
+      Parameters:
+        VpcId: !GetAtt NetworkStack.Outputs.VpcId
+        SubnetId: !GetAtt NetworkStack.Outputs.SubnetId
+      TimeoutInMinutes: 10
+
+Outputs:
+  WebsitePublicIp:
+    Value: !GetAtt ComputeStack.Outputs.InstancePublicIp

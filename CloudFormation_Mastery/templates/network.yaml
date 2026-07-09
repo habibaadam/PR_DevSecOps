@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Level 6 - Nested network template.
+
+Resources:
+  NestedVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: '10.60.0.0/16'
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: level6-nested-vpc
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref NestedVPC
+      CidrBlock: '10.60.1.0/24'
+      AvailabilityZone: !Select [0, !GetAZs '']
+      MapPublicIpOnLaunch: true
+
+Outputs:
+  VpcId:
+    Value: !Ref NestedVPC
+  SubnetId:
+    Value: !Ref PublicSubnet
