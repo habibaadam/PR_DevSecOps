@@ -105,7 +105,7 @@ Unlike Level 5, this level uses three separate template files. The two child tem
 
 | Template | Location | Role |
 |---|---|---|
-| [`root.yaml`](templates/root.yaml) | Deployed directly via console/CLI | Parent — orchestrates the two nested stacks and passes outputs between them |
+| [`root.yaml`](templates/root.yaml) | Deployed directly via console | Parent — orchestrates the two nested stacks and passes outputs between them |
 | [`network.yaml`](templates/network.yaml) | Uploaded to S3 | Child — provisions the VPC and public subnet, exports their IDs as outputs |
 | [`compute.yaml`](templates/compute.yaml) | Uploaded to S3 | Child — receives VPC and subnet IDs from the network stack, provisions the EC2 instance and security group |
 
