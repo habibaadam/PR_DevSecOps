@@ -11,6 +11,8 @@ This repository contains hands-on assignments and projects completed as part of 
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white)
+![CloudFormation](https://img.shields.io/badge/CloudFormation-FF4F8B?style=for-the-badge&logo=amazonaws&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
 
 
@@ -101,3 +103,21 @@ A Kahoot-style interactive quiz application built with Python + Flask, MongoDB, 
 - MongoDB as a containerised database
 - Mongo Express as a visual database admin UI
 - Live document writes from a Flask app to MongoDB
+
+---
+
+#### 6. AWS CloudFormation Mastery — Infrastructure as Code Lab
+📁 **Folder:** `CloudFormation_Mastery/`
+
+[View CloudFormation Lab Documentation](CloudFormation_Mastery/documentation.md)
+
+A hands-on Infrastructure as Code lab working across three levels of CloudFormation complexity — from provisioning a single EC2 instance to composing multi-template nested stacks and extending CloudFormation with custom Lambda-backed resources.
+
+**Topics Covered:**
+- EC2 instance provisioning with security groups and intrinsic functions (`!Sub`, `!Ref`, `!GetAtt`)
+- CloudFormation parameters, outputs, and resource dependency management
+- Nested stacks with `AWS::CloudFormation::Stack` and child templates hosted in S3
+- Cross-stack output passing via `!GetAtt StackName.Outputs.OutputKey`
+- Custom resources backed by AWS Lambda for logic not natively supported by CloudFormation
+- Stack update behaviour — resource replacement vs. in-place update
+- Rollback mechanics and Stack Events as a debugging tool
